@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--<color name="colorPrimary">#3F51B5</color>-->
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="blue">#0094ff</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#737C86</color>
+
+    <color name="header">#0f9ee2</color>
+    <color name="grey_a5a5a5">#A5A5A5</color>
+    <color name="red_f4333c">#F4333C</color>
+
+
+    <color name="possible_result_points">#c0ffff00</color>
+    <color name="result_view">#b0000000</color>
+    <color name="viewfinder_frame">#ff88ae00</color>
+    <color name="viewfinder_laser">#ffff0000</color>
+    <color name="viewfinder_mask">#60000000</color>
+    <color name="white_gray">#F2F7F9</color>
+    <color name="light_gray">#f3f4f5</color>
+    <color name="blankss_gray">#7F7F7F</color>
+    <color name="transparent">#00000000</color>
+    <!-- 闪兰色/道奇蓝 -->
+    <!-- 午夜蓝 -->
+    <!-- 银灰色 -->
+    <color name="gray">#808080</color>
+    <!-- 灰色 -->
+    <!-- 暗淡灰 -->
+    <color name="bg_color">#e5e5e5</color>
+    <color name="a7d4ff">#a7d4ff</color>
+    <color name="text_red">#FF3a2d</color>
+    <color name="delay_orange">#FF6600</color>
+    <color name="delay_yellow">#FF8100</color>
+    <!-- 订单状态 -->
+    <color name="chakan_te">#59B6E3</color>
+    <!-- 公共颜色 -->
+    <!-- 最黑 -->
+    <color name="true_black">#313538</color>
+    <color name="gray_black">#333333</color>
+    <!-- 橙色 -->
+    <!-- 红色 -->
+    <!-- 加入购物车左侧背景 -->
+    <!-- 浅灰 -->
+    <!-- 灰色 -->
+
+    <!-- 蓝色 -->
+    <color name="true_blue">#42A9ED</color>
+    <!-- 输入框默认提示语 最浅黑 -->
+    <color name="edithint">#AAB8C7</color>
+    <!-- 线的颜色 -->
+    <color name="line_color">#DADEE1</color>
+    <!-- 公共颜色 -->
+    <!-- 日历 -->
+    <!--  -->
+    <!-- menudraw -->
+    <!-- A light Holo shade of blue -->
+    <!-- A light Holo shade of green -->
+    <!-- A light Holo shade of red -->
+    <!-- A dark Holo shade of blue -->
+    <!-- A dark Holo shade of green -->
+    <!-- A dark Holo shade of red -->
+    <!-- A Holo shade of purple -->
+    <!-- A light Holo shade of orange -->
+    <!-- A dark Holo shade of orange -->
+    <!-- A really bright Holo shade of blue -->
+
+</resources>

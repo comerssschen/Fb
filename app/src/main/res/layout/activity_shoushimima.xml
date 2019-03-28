@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_gray"
+    android:orientation="vertical">
+
+    <include layout="@layout/header_view" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_10"
+        android:background="@color/white"
+        android:padding="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/text_size_8"
+            android:text="手势密码"
+            android:textColor="@color/true_black" />
+
+        <Switch
+            android:id="@+id/tb_news"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:textOff="关"
+            android:textOn="开" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:padding="@dimen/dp_14"
+        android:id="@+id/rl_creatgesture"
+        style="@style/linearlayout_style"
+        android:layout_marginTop="@dimen/dp_14"
+        android:background="@color/white">
+
+        <TextView
+            style="@style/text_style15"
+            android:text="修改手势密码" />
+
+        <ImageView
+            style="@style/layout_style"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/arrow_grey" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_marginTop="@dimen/text_size_1"
+        android:padding="@dimen/dp_14"
+        android:id="@+id/rl_forgetgesturelogin"
+        style="@style/linearlayout_style"
+        android:background="@color/white">
+
+        <TextView
+            style="@style/text_style15"
+            android:text="忘记手势密码" />
+
+        <ImageView
+            style="@style/layout_style"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/arrow_grey" />
+    </RelativeLayout>
+</LinearLayout>

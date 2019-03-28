@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_gray"
+    android:orientation="vertical">
+
+    <include layout="@layout/header_view" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:padding="@dimen/text_size_30">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/cgtb" />
+
+                <TextView
+                    android:id="@+id/tv_sucess"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:text="!"
+                    android:textColor="@color/true_black"
+                    android:textSize="@dimen/text_size_14" />
+
+                <TextView
+                    android:id="@+id/money"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/text_size_14"
+                    android:text="0"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/text_size_20" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_one"
+                style="@style/linearlayout_style"
+                android:layout_marginTop="@dimen/text_size_20"
+                android:background="@color/white"
+                android:padding="@dimen/dp_14">
+
+                <TextView
+                    android:id="@+id/tv_title_one"
+                    style="@style/text_style15"
+                    android:text="卡券编号" />
+
+                <TextView
+                    android:id="@+id/tv_content_one"
+                    style="@style/text_style15"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="@dimen/text_size_14"
+                    android:text="1"
+                    android:textColor="@color/black" />
+            </RelativeLayout>
+
+            <TextView style="@style/style_person_line2" />
+
+            <RelativeLayout
+                android:id="@+id/rl_two"
+                style="@style/linearlayout_style"
+                android:layout_marginTop="@dimen/text_size_1"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:padding="@dimen/dp_14">
+
+                <TextView
+                    android:id="@+id/tv_title_two"
+                    style="@style/text_style15"
+                    android:text="核销金额" />
+
+                <TextView
+                    android:id="@+id/tv_content_two"
+                    style="@style/text_style15"
+                    android:layout_alignParentRight="true"
+                    android:text="0"
+                    android:textColor="@color/black" />
+            </RelativeLayout>
+
+            <TextView style="@style/style_person_line2" />
+
+            <RelativeLayout
+                android:id="@+id/rl_three"
+                style="@style/linearlayout_style"
+                android:layout_marginTop="@dimen/text_size_1"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:padding="@dimen/dp_14">
+
+                <TextView
+                    android:id="@+id/tv_title_three"
+                    style="@style/text_style15"
+                    android:text="核销时间" />
+
+                <TextView
+                    android:id="@+id/tv_content_three"
+                    style="@style/text_style15"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="@dimen/text_size_14"
+                    android:text="3"
+                    android:textColor="@color/black" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_four"
+                style="@style/linearlayout_style"
+                android:layout_marginTop="@dimen/text_size_1"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:padding="@dimen/dp_14">
+
+                <TextView
+                    android:id="@+id/tv_title_four"
+                    style="@style/text_style15"
+                    android:text="核销时间" />
+
+                1<TextView
+                    android:id="@+id/tv_content_four"
+                    style="@style/text_style15"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="@dimen/text_size_14"
+                    android:text="3"
+                    android:textColor="@color/black" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_five"
+                style="@style/linearlayout_style"
+                android:layout_marginTop="@dimen/text_size_1"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:padding="@dimen/dp_14">
+
+                <TextView
+                    android:id="@+id/tv_title_five"
+                    style="@style/text_style15"
+                    android:text="核销时间" />
+
+                <TextView
+                    android:id="@+id/tv_content_five"
+                    style="@style/text_style15"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="@dimen/text_size_14"
+                    android:text="3"
+                    android:textColor="@color/black" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_shouyingyuan"
+                style="@style/linearlayout_style"
+                android:layout_marginTop="@dimen/dp_22"
+                android:background="@color/white"
+                android:orientation="horizontal"
+                android:padding="@dimen/dp_14">
+
+                <TextView
+                    android:id="@+id/tv_title_shouyingyuan"
+                    style="@style/text_style15"
+                    android:text="收银员" />
+
+                <TextView
+                    android:id="@+id/tv_shouyinyuan"
+                    style="@style/text_style15"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="@dimen/text_size_14"
+                    android:text="1"
+                    android:textColor="@color/black" />
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:id="@+id/finish_rl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_10"
+                android:layout_marginRight="@dimen/dp_10"
+                android:layout_marginTop="@dimen/text_size_20"
+                android:background="@drawable/finishbutton_big">
+
+                <TextView
+                    style="@style/text_style18"
+                    android:layout_centerInParent="true"
+                    android:padding="@dimen/text_size_10"
+                    android:text="确认"
+                    android:textColor="@color/white" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_72"
+                android:background="@color/white_gray" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_gray"
+    android:orientation="vertical">
+
+    <include layout="@layout/header_view" />
+
+
+    <RelativeLayout
+        android:padding="@dimen/dp_14"
+        android:layout_marginTop="@dimen/dp_14"
+        android:id="@+id/rl_longin_pwd"
+        style="@style/linearlayout_style"
+        android:background="@color/white">
+
+        <TextView
+            android:background="@color/white"
+            style="@style/text_style15"
+            android:text="登录密码" />
+
+        <ImageView
+            style="@style/layout_style"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/arrow_grey" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:padding="@dimen/dp_14"
+        android:layout_marginTop="@dimen/text_size_1"
+        android:id="@+id/rl_return_money_pwd"
+        style="@style/linearlayout_style"
+        android:background="@color/white">
+
+        <TextView
+            style="@style/text_style15"
+            android:text="退款密码" />
+
+        <ImageView
+            style="@style/layout_style"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/arrow_grey" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:padding="@dimen/dp_14"
+        android:id="@+id/rl_new_message"
+        style="@style/linearlayout_style"
+        android:layout_marginTop="@dimen/text_size_10"
+        android:background="@color/white">
+
+        <TextView
+            style="@style/text_style15"
+            android:text="新消息通知" />
+
+
+        <ImageView
+            style="@style/layout_style"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/arrow_grey" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_marginTop="@dimen/text_size_1"
+        android:padding="@dimen/dp_14"
+        android:id="@+id/rl_feedback"
+        style="@style/linearlayout_style"
+        android:background="@color/white">
+
+        <TextView
+            style="@style/text_style15"
+            android:text="意见反馈" />
+
+        <ImageView
+            style="@style/layout_style"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/arrow_grey" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_marginTop="@dimen/text_size_1"
+        android:padding="@dimen/dp_14"
+        android:id="@+id/rl_contact_customer"
+        style="@style/linearlayout_style"
+        android:background="@color/white">
+
+        <TextView
+            style="@style/text_style15"
+            android:text="联系客服" />
+
+        <ImageView
+            style="@style/layout_style"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:src="@drawable/arrow_grey" />
+    </RelativeLayout>
+
+</LinearLayout>

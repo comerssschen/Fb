@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.zhy.autolayout.AutoLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/header_view" />
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#fff2df"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/dp_14">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/tstb" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dp_22"
+            android:text="提示:当向客户收取现金后再点击记账" />
+
+    </com.zhy.autolayout.AutoLinearLayout>
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="15dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="应找零金额" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/split1" />
+
+        <TextView
+            android:id="@+id/paymoneyreturn_edit"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/delay_yellow"
+            android:textSize="@dimen/text_size_18" />
+    </com.zhy.autolayout.AutoLinearLayout>
+
+
+    <TextView
+        android:id="@+id/tv_marked"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="@dimen/text_size_10"
+        android:text="请输入金额"
+        android:textColor="@color/header"
+        android:textSize="@dimen/text_size_14" />
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@color/white">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/dp_10"
+            android:layout_weight="1"
+            android:gravity="bottom|end"
+            android:text="￥"
+            android:textColor="@color/true_black"
+            android:textSize="@dimen/text_size_30" />
+
+        <EditText
+            android:id="@+id/paymoney_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/dp_10"
+            android:layout_marginRight="@dimen/dp_10"
+            android:background="@color/white"
+            android:gravity="bottom|end"
+            android:hint="0"
+            android:inputType="numberDecimal"
+            android:textColor="@color/true_black"
+            android:textColorHint="@color/true_black"
+            android:textSize="@dimen/text_size_30" />
+
+    </com.zhy.autolayout.AutoLinearLayout>
+
+    <com.zhy.autolayout.AutoLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/gray"
+        android:orientation="vertical">
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:orientation="vertical">
+
+
+                <Button
+                    android:id="@+id/soft_keyboard_btn_1"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_72"
+                    android:layout_marginTop="1px"
+                    android:layout_weight="1.0"
+                    android:background="@color/white"
+                    android:text="1"
+                    android:textColor="@color/true_black"
+                    android:textSize="@dimen/text_size_26" />
+
+                <Button
+                    android:id="@+id/soft_keyboard_btn_4"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_72"
+                    android:layout_marginTop="1px"
+                    android:layout_weight="1.0"
+                    android:background="@color/white"
+                    android:text="4"
+                    android:textColor="@color/true_black"
+                    android:textSize="@dimen/text_size_26" />
+
+            </com.zhy.autolayout.AutoLinearLayout>
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="1px"
+                android:layout_weight="1.0"
+                android:orientation="vertical">
+
+
+                <Button
+                    android:id="@+id/soft_keyboard_btn_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_72"
+                    android:layout_marginTop="1px"
+                    android:layout_weight="1.0"
+                    android:background="@color/white"
+                    android:text="2"
+                    android:textColor="@color/true_black"
+                    android:textSize="@dimen/text_size_26" />
+
+
+                <Button
+                    android:id="@+id/soft_keyboard_btn_5"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_72"
+                    android:layout_marginTop="1px"
+                    android:layout_weight="1.0"
+                    android:background="@color/white"
+                    android:text="5"
+                    android:textColor="@color/true_black"
+                    android:textSize="@dimen/text_size_26" />
+
+            </com.zhy.autolayout.AutoLinearLayout>
+
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="1px"
+                android:layout_weight="1.0"
+                android:orientation="vertical">
+
+
+                <Button
+                    android:id="@+id/soft_keyboard_btn_3"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_72"
+                    android:layout_marginTop="1px"
+                    android:layout_weight="1.0"
+                    android:background="@color/white"
+                    android:text="3"
+                    android:textColor="@color/true_black"
+                    android:textSize="@dimen/text_size_26" />
+
+
+                <Button
+                    android:id="@+id/soft_keyboard_btn_6"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_72"
+                    android:layout_marginTop="1px"
+                    android:layout_weight="1.0"
+                    android:background="@color/white"
+                    android:text="6"
+                    android:textColor="@color/true_black"
+                    android:textSize="@dimen/text_size_26" />
+
+            </com.zhy.autolayout.AutoLinearLayout>
+
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="1px"
+                android:layout_weight="1.0"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/bt_delete"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_72"
+                    android:layout_marginTop="1px"
+                    android:layout_weight="1.0"
+                    android:background="@color/light_gray"
+                    android:text="删除"
+                    android:textColor="@color/true_black"
+                    android:textSize="@dimen/text_size_20" />
+
+                <Button
+                    android:id="@+id/bt_clear"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_72"
+                    android:layout_marginTop="1px"
+                    android:layout_weight="1.0"
+                    android:background="@color/light_gray"
+                    android:text="清空"
+                    android:textColor="@color/true_black"
+                    android:textSize="@dimen/text_size_20" />
+            </com.zhy.autolayout.AutoLinearLayout>
+
+
+        </com.zhy.autolayout.AutoLinearLayout>
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/gray" />
+
+        <com.zhy.autolayout.AutoLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+            <com.zhy.autolayout.AutoLinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.0"
+                android:orientation="vertical">
+
+
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1.0"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/soft_keyboard_btn_7"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_72"
+                        android:layout_weight="1.0"
+                        android:background="@color/white"
+                        android:text="7"
+                        android:textColor="@color/true_black"
+                        android:textSize="@dimen/text_size_26" />
+
+
+                    <Button
+                        android:id="@+id/soft_keyboard_btn_8"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_72"
+                        android:layout_marginLeft="1px"
+                        android:layout_weight="1.0"
+                        android:background="@color/white"
+                        android:text="8"
+                        android:textColor="@color/true_black"
+                        android:textSize="@dimen/text_size_26" />
+
+
+                    <Button
+                        android:id="@+id/soft_keyboard_btn_9"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_72"
+                        android:layout_marginLeft="1px"
+                        android:layout_weight="1.0"
+                        android:background="@color/white"
+                        android:text="9"
+                        android:textColor="@color/true_black"
+                        android:textSize="@dimen/text_size_26" />
+
+                </com.zhy.autolayout.AutoLinearLayout>
+
+                <com.zhy.autolayout.AutoLinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1px"
+                    android:layout_weight="1.0"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/soft_keyboard_btn_0"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_72"
+                        android:layout_weight="1.0"
+                        android:background="@color/white"
+                        android:text="0"
+                        android:textColor="@color/true_black"
+                        android:textSize="@dimen/text_size_26" />
+
+
+                    <com.zhy.autolayout.AutoLinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2.0"
+                        android:background="@color/gray"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <Button
+                            android:id="@+id/bt_point"
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/dp_72"
+                            android:layout_marginLeft="1px"
+                            android:layout_weight="1.0"
+                            android:background="@color/white"
+                            android:text="."
+                            android:textColor="@color/true_black"
+                            android:textSize="@dimen/text_size_26" />
+                    </com.zhy.autolayout.AutoLinearLayout>
+
+                </com.zhy.autolayout.AutoLinearLayout>
+
+
+            </com.zhy.autolayout.AutoLinearLayout>
+
+
+            <Button
+                android:id="@+id/bt_confirm"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="1px"
+                android:layout_weight="3.0"
+                android:background="@color/header"
+                android:text="确定"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_20" />
+
+        </com.zhy.autolayout.AutoLinearLayout>
+    </com.zhy.autolayout.AutoLinearLayout>
+</com.zhy.autolayout.AutoLinearLayout>

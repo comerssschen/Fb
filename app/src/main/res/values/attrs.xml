@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="itcast">
+        <attr name="isopen" format="boolean"></attr>
+    </declare-styleable>
+    <!-- 定义SegmentButton自定义控制的属性-->
+    <declare-styleable name="SegmentButton">
+        <attr name="leftText" format="string" />
+        <attr name="rightText" format="string" />
+    </declare-styleable>
+
+    <declare-styleable name="BadgeView">
+        <attr name="badge_padding_top" format="dimension" />
+        <attr name="badge_padding_right" format="dimension" />
+        <attr name="badge_count" format="integer" />
+        <attr name="badge_none_show" format="boolean" />
+        <attr name="badge_color" format="color" />
+    </declare-styleable>
+</resources>

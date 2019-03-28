@@ -1,0 +1,311 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_gray"
+    android:orientation="vertical">
+
+    <include layout="@layout/header_view" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/ll_shishifenxi"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/iv_shishifenxi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/dp_14"
+                android:src="@drawable/shishixiaofei" />
+
+            <TextView
+                android:id="@+id/tv_shishifenxi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/dp_14"
+                android:layout_marginTop="@dimen/dp_10"
+                android:text="实时消费分析"
+                android:textColor="@color/gray_black"
+                android:textSize="@dimen/text_size_14" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/light_gray" />
+
+        <LinearLayout
+            android:id="@+id/ll_shijianfenxi"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/iv_shijianfenxi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/dp_14"
+                android:src="@drawable/xiaofeishijian" />
+
+            <TextView
+                android:id="@+id/tv_shijianfenxi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/dp_14"
+                android:layout_marginTop="@dimen/dp_10"
+                android:text="消费时间分析"
+                android:textColor="@color/gray_black"
+                android:textSize="@dimen/text_size_14" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/light_gray" />
+
+        <LinearLayout
+            android:id="@+id/ll_cishufenxi"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/iv_cishufenxi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/dp_14"
+                android:src="@drawable/xiaofeicishu" />
+
+            <TextView
+                android:id="@+id/tv_cishufenxi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/dp_14"
+                android:layout_marginTop="@dimen/dp_10"
+                android:text="消费次数分析"
+                android:textColor="@color/gray_black"
+                android:textSize="@dimen/text_size_14" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/light_gray" />
+
+    <LinearLayout
+
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/ll_jinefenxi"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/iv_jinefenxi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/dp_14"
+                android:src="@drawable/xiaofeijine" />
+
+            <TextView
+                android:id="@+id/tv_jinefenxi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/dp_14"
+                android:layout_marginTop="@dimen/dp_10"
+                android:text="消费金额分析"
+                android:textColor="@color/gray_black"
+                android:textSize="@dimen/text_size_14" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/light_gray" />
+
+        <LinearLayout
+            android:id="@+id/ll_zhouqifenxi"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/iv_zhouqifenxi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/dp_14"
+                android:src="@drawable/xiaofeizhouqi" />
+
+            <TextView
+                android:id="@+id/tv_zhouqifenxi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/dp_14"
+                android:layout_marginTop="@dimen/dp_10"
+                android:text="消费周期分析"
+                android:textColor="@color/gray_black"
+                android:textSize="@dimen/text_size_14" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@color/light_gray" />
+
+        <LinearLayout
+            android:id="@+id/ll_fugoulvfenxi"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/iv_fugoulvfenxi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/dp_14"
+                android:src="@drawable/fugoulv" />
+
+            <TextView
+                android:id="@+id/tv_fugoulvfenxi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="@dimen/dp_14"
+                android:layout_marginTop="@dimen/dp_10"
+                android:text="复购率分析"
+                android:textColor="@color/gray_black"
+                android:textSize="@dimen/text_size_14" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_weishangcheng"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_14"
+        android:background="@color/white"
+        android:padding="@dimen/text_size_10"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/iv_cotentssss"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:src="@drawable/shangchengdingdan" />
+
+        <TextView
+            android:id="@+id/tv_weishangcheng"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_14"
+            android:layout_toRightOf="@+id/iv_cotentssss"
+            android:text="微商城订单"
+            android:textColor="@color/gray_black"
+            android:textSize="@dimen/text_size_16" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/text_size_10"
+            android:src="@drawable/fanhui" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_huodongguanli"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_14"
+        android:background="@color/white"
+        android:padding="@dimen/text_size_10"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/iv_cotentsss"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:src="@drawable/huodongguanli" />
+
+        <TextView
+            android:id="@+id/tv_huodongguanli"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_14"
+            android:layout_toRightOf="@+id/iv_cotentsss"
+            android:text="活动管理"
+            android:textColor="@color/gray_black"
+            android:textSize="@dimen/text_size_16" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/text_size_10"
+            android:src="@drawable/fanhui" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_faquan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/text_size_30"
+        android:layout_marginRight="@dimen/text_size_30"
+        android:layout_marginTop="@dimen/dp_60"
+        android:background="@drawable/wyfqbk"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_faquan"
+            style="@style/text_style18"
+            android:layout_centerInParent="true"
+            android:padding="@dimen/text_size_10"
+            android:text="我要发券"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+</LinearLayout>

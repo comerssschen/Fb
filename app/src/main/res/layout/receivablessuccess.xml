@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_gray"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:background="@color/header">
+
+        <LinearLayout
+            android:id="@+id/ll_fanhui"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="@dimen/text_size_15"
+                android:layout_marginLeft="@dimen/text_size_15"
+                android:layout_marginTop="@dimen/text_size_15"
+                android:src="@drawable/fhtb" />
+
+            <TextView
+                style="@style/text_style18"
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="@dimen/text_size_15"
+                android:layout_marginTop="@dimen/text_size_15"
+                android:singleLine="true"
+                android:text="返回"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/head_view_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="收款详情"
+            android:textColor="#ffffff"
+            android:textSize="19sp" />
+
+        <TextView
+            android:id="@+id/tv_returnmoney"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp_10"
+            android:text="退款"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_18" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="@dimen/text_size_30">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/cgtb" />
+
+        <TextView
+            android:id="@+id/tv_sucess"
+            android:textSize="@dimen/text_size_14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="百度钱包收款成功!"
+            android:textColor="@color/true_black" />
+
+        <TextView
+            android:id="@+id/money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/text_size_14"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/text_size_20" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:padding="@dimen/dp_14"
+        android:id="@+id/rl_pay_number"
+        style="@style/linearlayout_style"
+        android:layout_marginTop="@dimen/text_size_20"
+        android:background="@color/white">
+
+        <TextView
+            style="@style/text_style15"
+            android:text="付款账号" />
+
+        <TextView
+            android:id="@+id/tv_resultstring"
+            style="@style/text_style15"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="@dimen/text_size_14"
+            android:textColor="@color/black" />
+    </RelativeLayout>
+
+    <TextView style="@style/style_person_line2" />
+
+    <RelativeLayout
+        android:padding="@dimen/dp_14"
+        style="@style/linearlayout_style"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/text_style15"
+            android:text="订单编号" />
+
+        <TextView
+            android:id="@+id/tv_bianhao"
+            style="@style/text_style15"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/black" />
+    </RelativeLayout>
+
+    <TextView style="@style/style_person_line2" />
+
+    <RelativeLayout
+        android:padding="@dimen/dp_14"
+        style="@style/linearlayout_style"
+        android:background="@color/white"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/text_style15"
+            android:text="交易时间" />
+
+        <TextView
+            android:id="@+id/tv_time"
+            style="@style/text_style15"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="@dimen/text_size_14"
+            android:textColor="@color/black" />
+    </RelativeLayout>
+
+    <TextView style="@style/style_person_line2" />
+
+    <RelativeLayout
+        android:id="@+id/finish_rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/text_size_20"
+        android:layout_margin="@dimen/dp_22"
+        android:background="@drawable/finshbutton">
+        <TextView
+            style="@style/text_style18"
+            android:layout_centerInParent="true"
+            android:padding="@dimen/text_size_10"
+            android:text="确认"
+            android:textColor="@color/white" />
+    </RelativeLayout>
+
+</LinearLayout>

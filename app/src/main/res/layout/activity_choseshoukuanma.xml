@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_gray"
+    android:orientation="vertical">
+
+    <include layout="@layout/header_view" />
+
+    <RelativeLayout
+        android:id="@+id/rl_weixin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/text_size_20"
+        android:background="@color/white"
+        android:padding="@dimen/text_size_10">
+
+        <ImageView
+            android:id="@+id/iv_weixin"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:scaleType="fitXY"
+            android:src="@drawable/weixzf" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_toRightOf="@+id/iv_weixin"
+            android:text="微信"
+            android:textColor="@color/gray_black"
+            android:textSize="@dimen/text_size_16" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/text_size_10"
+            android:src="@drawable/fanhui" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_zhifubao"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/text_size_1"
+        android:background="@color/white"
+        android:padding="@dimen/text_size_10">
+
+        <ImageView
+            android:id="@+id/iv_zhifubao"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:scaleType="fitXY"
+            android:src="@drawable/zhifb" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_toRightOf="@+id/iv_zhifubao"
+            android:text="支付宝"
+            android:textColor="@color/gray_black"
+            android:textSize="@dimen/text_size_16" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/text_size_10"
+            android:src="@drawable/fanhui" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_baiduqianbao"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/text_size_1"
+        android:background="@color/white"
+        android:padding="@dimen/text_size_10">
+
+        <ImageView
+            android:id="@+id/iv_baiduqianbao"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:scaleType="fitXY"
+            android:src="@drawable/baidqb" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_toRightOf="@+id/iv_baiduqianbao"
+            android:text="百度钱包"
+            android:textColor="@color/gray_black"
+            android:textSize="@dimen/text_size_16" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/text_size_10"
+            android:src="@drawable/fanhui" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_jingdong"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/text_size_20"
+        android:background="@color/white"
+        android:padding="@dimen/text_size_10">
+
+        <ImageView
+            android:id="@+id/iv_jingdong"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:scaleType="fitXY"
+            android:src="@drawable/jingdqb" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_toRightOf="@+id/iv_jingdong"
+            android:text="京东"
+            android:textColor="@color/gray_black"
+            android:textSize="@dimen/text_size_16" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/text_size_10"
+            android:src="@drawable/fanhui" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_qq"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/text_size_1"
+        android:background="@color/white"
+        android:padding="@dimen/text_size_10">
+
+        <ImageView
+            android:id="@+id/iv_qq"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:scaleType="fitXY"
+            android:src="@drawable/qqqianb" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_toRightOf="@+id/iv_qq"
+            android:text="QQ"
+            android:textColor="@color/gray_black"
+            android:textSize="@dimen/text_size_16" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:padding="@dimen/text_size_10"
+            android:src="@drawable/fanhui" />
+    </RelativeLayout>
+
+</LinearLayout>

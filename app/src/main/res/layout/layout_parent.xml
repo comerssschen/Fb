@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rl_item"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="@dimen/text_size_10">
+
+        <TextView
+            android:id="@+id/parent_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/text_size_5"
+            android:singleLine="true"
+            android:text="dddddddddddddddddds"
+            android:textColor="@color/true_black"
+            android:textSize="@dimen/text_size_14" />
+
+        <TextView
+            android:id="@+id/textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/parent_textview"
+            android:padding="@dimen/text_size_5"
+            android:singleLine="true"
+            android:text="dddddddddddddddddd"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_12" />
+
+        <TextView
+            android:id="@+id/tv_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/parent_textview"
+            android:layout_toEndOf="@+id/textview"
+            android:padding="@dimen/text_size_5"
+            android:singleLine="true"
+            android:textColor="@color/header"
+            android:textSize="@dimen/text_size_14" />
+
+        <ImageView
+            android:id="@+id/arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center"
+            android:src="@drawable/arrow_grey" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/text_size_1"
+        android:background="@color/light_gray" />
+
+</LinearLayout>

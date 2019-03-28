@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white_gray"
+    android:orientation="vertical">
+
+    <include layout="@layout/header_view" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#fff2df"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="@dimen/dp_14">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/tstb" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dp_22"
+                android:text="提示:当向客户刷卡消费后再点击记账！" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:padding="15dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="刷卡金额" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/split1" />
+
+            <TextView
+                android:id="@+id/paymoney_edit"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:text="￥22"
+                android:textColor="@color/delay_yellow"
+                android:textSize="@dimen/text_size_18" />
+        </LinearLayout>
+
+        <TextView style="@style/style_person_line2" />
+
+        <RelativeLayout
+            android:id="@+id/commit_rl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dp_22"
+            android:layout_marginTop="@dimen/text_size_20"
+            android:background="@drawable/finshbutton">
+
+            <TextView
+                style="@style/text_style18"
+                android:layout_centerInParent="true"
+                android:padding="@dimen/text_size_10"
+                android:text="记账"
+                android:textColor="@color/white" />
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>
