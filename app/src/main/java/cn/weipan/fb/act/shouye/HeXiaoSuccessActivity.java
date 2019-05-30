@@ -161,25 +161,6 @@ public class HeXiaoSuccessActivity extends BaseActivity implements View.OnClickL
                 }
             }).start();
 
-        } else if (TextUtils.equals(activity, "MemberConsumptionActivity")) {//会员消费
-            headViewTitle.setText("会员消费详情");
-            tvSucess.setText("会员消费成功");
-            tvTitleOne.setText("会员卡号");
-            tvTitleTwo.setText("会员姓名");
-            tvTitleThree.setText("应收金额");
-            tvTitleFour.setText("实收金额");
-            tvTitleFive.setText("交易时间");
-            tvContentThree.setText("￥" + text_three);
-            tvContentFour.setText("￥" + text_four);
-        } else if (TextUtils.equals(activity, "JiFenActivity")) {//积分消费
-            headViewTitle.setText("积分消费详情");
-            tvSucess.setText("积分消费成功");
-            tvTitleOne.setText("会员卡号");
-            tvTitleTwo.setText("会员姓名");
-            tvTitleThree.setText("消费积分");
-            tvTitleFour.setText("积分余额");
-            tvTitleFive.setText("交易时间");
-            money.setText(text_three);
         } else if (TextUtils.equals(activity, "KaquanhexiaoActivity")) {//卡券核销
             headViewTitle.setText("卡券核销详情");
             tvSucess.setText("卡券核销成功");
@@ -208,16 +189,6 @@ public class HeXiaoSuccessActivity extends BaseActivity implements View.OnClickL
                 money.setText(text_money);
                 tvContentFour.setText("￥" + text_four);
             }
-        } else if (TextUtils.equals(activity, "MemberIncomeSuccessActivity")) {//会员充值成功
-            headViewTitle.setText("会员充值详情");
-            tvSucess.setText("会员卡充值成功！");
-            tvTitleOne.setText("会员卡号");
-            tvTitleTwo.setText("会员姓名");
-            tvTitleThree.setText("充值金额");
-            tvTitleFour.setText("账户余额");
-            tvTitleFive.setText("交易时间");
-            tvContentThree.setText("￥" + text_three);
-            tvContentFour.setText("￥" + text_four);
         } else if (TextUtils.equals(activity, "TuiKuanActivity")) {//退款成功
             headViewTitle.setText("账单详情");
             tvTitleOne.setText("付款账号");

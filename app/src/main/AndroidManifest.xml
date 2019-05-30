@@ -108,7 +108,7 @@
         <activity android:name=".act.BaseActivity" />
         <activity android:name=".act.BaseNoLoginActivity" />
         <activity android:name=".act.BaseBaseActivity" />
-        <activity android:name=".act.WelcomeActivity" />
+        <activity android:name=".act.GuideActivity" />
         <activity android:name=".act.InformationActivity" />
         <activity android:name=".act.LoginNewActivity" />
         <!--android:windowSoftInputMode="stateVisible|adjustResize"-->
@@ -143,7 +143,6 @@
         <activity android:name=".act.zhangdan.NextWebActivity" />
         <activity android:name=".act.zhangdan.BaseZhangDanWebActivity" />
         <activity android:name=".act.BannerActivity" />
-        <activity android:name=".act.shouye.MemberDetailsActivity" />
         <activity android:name=".act.shouye.ChoseShouKuanMaActivity" />
     </application>
 

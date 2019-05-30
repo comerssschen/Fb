@@ -49,16 +49,17 @@ public class StatementFragment extends BaseFragment implements View.OnClickListe
     private Handler handler = new Handler() {
         public void handleMessage(android.os.Message msg) {
             viewpager.setCurrentItem(viewpager.getCurrentItem() + 1);// 收到消息，指向下一个页面
-            handler.sendEmptyMessageDelayed(msgWhat, 5000);// 5S后在发送一条消息，由于在handleMessage()方法中，造成死循环。
+            handler.sendEmptyMessageDelayed(msgWhat, 4000);// 5S后在发送一条消息，由于在handleMessage()方法中，造成死循环。
         }
     };
     private LinearLayout ll_dots;
     private TextView tv_ratio;
     private TextView tv_total;
     private TextView tv_desc;
-    private String[] des_arrays;
-    private String[] des_arrayss;
-    private String[] des_arraysss;
+    private String[] des_arrays = new String[]{"今日收款", "昨日收款", "本月收款", "上月收款"};
+    private String[] des_arrayss = new String[]{"", "", "", ""};
+    private String[] des_arraysss = new String[]{"（合计0笔）", "（合计0笔）", "（合计0笔）", "（合计0笔）"};
+
     private List<TextView> tv_dots_list = new ArrayList<TextView>();
     private TextView tv_dot;
     private Intent intent;
@@ -110,7 +111,6 @@ public class StatementFragment extends BaseFragment implements View.OnClickListe
     protected void initView(View mChildContentView, Bundle savedInstanceState) {
         //注册接受消息的eventbus
         aDefault = EventBus.getDefault();
-        aDefault.register(StatementFragment.this);
         viewpager = mChildContentView.findViewById(R.id.viewpager);
         viewpager.setAdapter(new MyAdapter());
         viewpager.setCurrentItem(4 * 1000);// 当前页是5000页,也即是0页：因为5000%5=0.
@@ -146,7 +146,6 @@ public class StatementFragment extends BaseFragment implements View.OnClickListe
         initIndicator();//监听pager的变化
         getContent();
         getTodayCount();
-        handler.sendEmptyMessageDelayed(msgWhat, 5000);
     }
 
     @Override
@@ -191,7 +190,6 @@ public class StatementFragment extends BaseFragment implements View.OnClickListe
                         String totalMonthMoney = bannerBean.optString("TotalMonthMoney");
                         String lastmonthCount = bannerBean.optString("LastmonthCount");
                         String lastmonthMoney = bannerBean.optString("LastmonthMoney");
-                        des_arrays = new String[]{"今日收款", "昨日收款", "本月收款", "上月收款"};
                         des_arrayss = new String[]{totalDayMoney, totalYestMoney, totalMonthMoney, lastmonthMoney};
                         des_arraysss = new String[]{"（合计" + totalDayCount + "笔）", "（合计" + totalYestCount + "笔）", "（合计" + totalMonthCount + "笔）", "（合计" + lastmonthCount + "笔）"};
                     } else {
@@ -444,6 +442,13 @@ public class StatementFragment extends BaseFragment implements View.OnClickListe
     public void onStop() {
         super.onStop();
         handler.removeMessages(msgWhat);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.i("test", " state  onResume");
+        handler.sendEmptyMessageDelayed(msgWhat, 4000);
     }
 
     @Override

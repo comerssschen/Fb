@@ -244,13 +244,6 @@ public class TrueMoneyActivity extends BaseActivity implements NetworkRequest.Re
                     NetworkRequest mLoginRequest = new NetworkRequest(sendData);
                     mLoginRequest.start();
                     mLoginRequest.setListener(TrueMoneyActivity.this);
-                } else if (TextUtils.equals(activity, "MemberIncomeSuccessActivity")) {//会员充值成功
-
-                    sendData = "{app" + "|" + appContext.getDeviceId() + "|" + appContext.getCashId() + "|133|" + memberNumber + "|24|" + paymoney + "||" + randomStr + miyao + "|tag_wx_card}";
-                    Log.i("test", "sendData = " + sendData);
-                    NetworkRequest mLoginRequest = new NetworkRequest(sendData);
-                    mLoginRequest.start();
-                    mLoginRequest.setListener(TrueMoneyActivity.this);
                 }
 
                 break;
@@ -264,27 +257,14 @@ public class TrueMoneyActivity extends BaseActivity implements NetworkRequest.Re
         }
     }
 
-    private void setStatus(String result) {//{0|150****9610|2016110221001004360237560288|2016-11-02 15:06:00|支付宝收款成功|63|0.01|tag_scan_ali}
-//                                         //{0|oruCVt9kVBXNVDoX-6_YC-9aCGMw|4002632001201611038617028861|2016/11/3 16:00:30|微信收款成功|1402|0|tag_scan_wx}
-//                                           {0|00001108000168852016120616183444|00000000006|ggg|2016/12/6 16:40:18|9978.00|6|金牌会员|tag_scan_vip}
+    private void setStatus(String result) {
         loadingDialog.dismiss();
-        Log.i("test", "saoma = result = " + result);//{0|00000000006|ggg|普通会员|50.00|0|99|tag_scan_vip}
+        Log.i("test", "saoma = result = " + result);
         String[] arr = null;
         if (result != null) {
             arr = result.replace("{", "").replace("}", "").split("\\|");
             if (arr[0].equals("0")) {
-                if (TextUtils.equals(activity, "MemberIncomeSuccessActivity")) {///会员充值成功
-                    intent = new Intent(TrueMoneyActivity.this, HeXiaoSuccessActivity.class);
-                    intent.putExtra("Activity", "MemberIncomeSuccessActivity");
-                    intent.putExtra("Text_money", "￥" + arr[6]);
-                    intent.putExtra("Text_one", arr[2]);
-                    intent.putExtra("Text_two", arr[3]);
-                    intent.putExtra("Text_three", arr[6]);
-                    intent.putExtra("Text_four", arr[5]);
-                    intent.putExtra("Text_five", arr[4]);
-                    intent.putExtra("Text_shouyingyuan", appContext.getRealName());
-                    startActivity(intent);
-                } else if (TextUtils.equals(activity, "KaquanshoukuanSuccessActivity")) {//卡券收款成功
+                if (TextUtils.equals(activity, "KaquanshoukuanSuccessActivity")) {//卡券收款成功
                     intent = new Intent(TrueMoneyActivity.this, HeXiaoSuccessActivity.class);
                     intent.putExtra("Activity", "KaquanshoukuanSuccessActivity");
                     intent.putExtra("Text_money", "￥" + arr[9]);
@@ -293,21 +273,11 @@ public class TrueMoneyActivity extends BaseActivity implements NetworkRequest.Re
                     intent.putExtra("Text_three", arr[8]);
                     intent.putExtra("Text_four", arr[9]);
                     intent.putExtra("Text_five", arr[4]);
-
-//                    intent.putExtra("Text_money", "￥" + arr[9]);
-//                    intent.putExtra("Text_one", arr[3]);
-//                    intent.putExtra("Text_two", arr[9]);
-//                    intent.putExtra("Text_three", arr[4]);
                     intent.putExtra("Text_shouyingyuan", appContext.getRealName());
                     startActivity(intent);
                 }
-
-
             } else {
                 AlertDialog.Builder builder = new AlertDialog.Builder(TrueMoneyActivity.this);
-                if(TextUtils.equals(activity,"")){
-
-                }
                 builder.setTitle("充值失败");
                 builder.setMessage(arr[1]);
                 builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -317,13 +287,12 @@ public class TrueMoneyActivity extends BaseActivity implements NetworkRequest.Re
                         TrueMoneyActivity.this.finish();
                     }
                 });
-
                 Dialog noticeDialog = builder.create();
                 noticeDialog.setCanceledOnTouchOutside(false);
                 noticeDialog.show();
             }
-        }else {
-            ToastUtils.showToast(TrueMoneyActivity.this,"网络连接超时，请重试！");
+        } else {
+            ToastUtils.showToast(TrueMoneyActivity.this, "网络连接超时，请重试！");
         }
 
     }

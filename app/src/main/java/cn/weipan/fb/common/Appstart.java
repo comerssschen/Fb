@@ -19,9 +19,9 @@ import com.blankj.utilcode.util.PhoneUtils;
 
 import cn.weipan.fb.R;
 import cn.weipan.fb.act.BaseNoLoginActivity;
+import cn.weipan.fb.act.GuideActivity;
 import cn.weipan.fb.act.LoginNewActivity;
 import cn.weipan.fb.act.MainActivity;
-import cn.weipan.fb.act.WelcomeActivity;
 import cn.weipan.fb.service.TagAliasOperatorHelper;
 import cn.weipan.fb.utils.NetworkRequest;
 import cn.weipan.fb.utils.SharedPre;
@@ -52,7 +52,7 @@ public class Appstart extends BaseNoLoginActivity implements NetworkRequest.Repo
         setContentView(view);
         shared = new SharedPre(this);
         ScaleAnimation scaleAnimation = new ScaleAnimation(1.0f, 1.2f, 1.0f, 1.2f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-        scaleAnimation.setDuration(2000);
+        scaleAnimation.setDuration(1500);
         scaleAnimation.setFillAfter(true);
         scaleAnimation.setAnimationListener(
                 new Animation.AnimationListener() {
@@ -63,6 +63,7 @@ public class Appstart extends BaseNoLoginActivity implements NetworkRequest.Repo
                         if (!user_first && PermissionUtils.isGranted(Manifest.permission.READ_EXTERNAL_STORAGE)) {
                             login();
                         }
+                        Log.i("test", System.currentTimeMillis() + "onAnimationStart");
                     }
 
                     @Override
@@ -72,7 +73,7 @@ public class Appstart extends BaseNoLoginActivity implements NetworkRequest.Repo
                             public void onGranted() {
                                 if (user_first) {//第一次
                                     setting.edit().putBoolean("FIRST", false).commit();
-                                    intent = new Intent(Appstart.this, WelcomeActivity.class);
+                                    intent = new Intent(Appstart.this, GuideActivity.class);
                                 } else {
                                     if (loginSucess) {
                                         TagAliasOperatorHelper.TagAliasBean tagAliasBean = new TagAliasOperatorHelper.TagAliasBean();
@@ -86,6 +87,7 @@ public class Appstart extends BaseNoLoginActivity implements NetworkRequest.Repo
                                         intent = new Intent(Appstart.this, LoginNewActivity.class);
                                     }
                                 }
+                                Log.i("test", System.currentTimeMillis() + "onAnimationEnd");
                                 startActivity(intent);
                                 finish();
                             }

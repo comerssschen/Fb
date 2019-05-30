@@ -111,11 +111,8 @@ public class PayMoneyActivity extends BaseActivity implements NetworkRequest.Rep
         memberName = getIntent().getStringExtra("MemberName");
         memberType = getIntent().getStringExtra("MemberType");
         memberMoney = getIntent().getStringExtra("MemberMoney");
-
         headViewTitle.setText("收款金额");
         tvMarked.setText("请输入收款金额");
-
-
         paymoneyEdit.setInputType(EditorInfo.TYPE_CLASS_PHONE);
         EditTextUtils.setPriceEditText(paymoneyEdit);
         paymoneyEdit.addTextChangedListener(new TextWatcher() {
@@ -140,16 +137,7 @@ public class PayMoneyActivity extends BaseActivity implements NetworkRequest.Rep
 
             }
         });
-        if (TextUtils.equals(activity, "JiFenActivity")) {//积分消费
-            headViewTitle.setText("积分消费");
-            tvMarked.setText("请输入消费积分");
-            btPoint.setClickable(false);
-        } else if (TextUtils.equals(activity, "MemberConsumptionActivity")) {//会员消费
-            headViewTitle.setText("会员消费");
-        } else if (TextUtils.equals(activity, "MemberIncomeActivity")) {//会员充值
-            headViewTitle.setText("会员充值");
-            tvMarked.setText("请输入充值金额");
-        } else if (TextUtils.equals(activity, "KaquanshoukuanActivity")) {//卡券收款
+        if (TextUtils.equals(activity, "KaquanshoukuanActivity")) {//卡券收款
             headViewTitle.setText("卡券收款");
             tvMarked.setText("请输入消费金额");
         } else if (TextUtils.equals(activity, "KaquanhexiaoActivity")) {//卡券核销
@@ -274,34 +262,10 @@ public class PayMoneyActivity extends BaseActivity implements NetworkRequest.Rep
                         ToastUtils.showToast(PayMoneyActivity.this, "请输入有效金额");
                     } else if (TextUtils.equals(paymoney, "0.00")) {
                         ToastUtils.showToast(PayMoneyActivity.this, "请输入有效金额");
+                    } else if (Double.parseDouble(paymoney) > 100000) {
+                        ToastUtils.showToast(PayMoneyActivity.this, "最大金额99999.99");
                     } else {
-                        if (TextUtils.equals(activity, "MemberConsumptionActivity")) {  //会员消费
-                            loadingDialog.show();
-                            sendData = "{app" + "|" + appContext.getDeviceId() + "|" + appContext.getCashId() + "|132|" + memberNumber + "|" + paymoney + "|" + randomStr + miyao + "|tag_wx_card}";
-                            Log.i("test", "sendData = " + sendData);
-                            NetworkRequest mLoginRequest = new NetworkRequest(sendData);
-                            mLoginRequest.start();
-                            mLoginRequest.setListener(PayMoneyActivity.this);
-//                            {app|10006740|16885|133|00000000006|55|0.01|284521431838212758|N5GU3B7C1625ADEDBCFB2C05|tag_scan_ali}
-//                            {app|10006740|16885|133|00000000006|55|0.01|281952558269955860|VYMNHOCW494D86F3F1F5E4A9|tag_scan_ali}
-//                            {app|10006740|16885|55|0.01|280307017614890316|9HE32TTN528B0DE1BB7DC46D|tag_scan_ali}
-                        } else if (TextUtils.equals(activity, "MemberIncomeActivity")) {  //会员充值
-
-                            intent = new Intent(PayMoneyActivity.this, SaoMaActivity.class);
-                            intent.putExtra("Activity", "MemberIncomeSuccessActivity");
-                            intent.putExtra("paymoney", paymoney);
-                            intent.putExtra("memberNumber", memberNumber);
-                            startActivity(intent);
-
-                        } else if (TextUtils.equals(activity, "JiFenActivity")) {//积分消费
-                            loadingDialog.show();
-                            sendData = "{app" + "|" + appContext.getDeviceId() + "|" + appContext.getCashId() + "|134|" + memberNumber + "|" + paymoney + "|" + randomStr + miyao + "|tag_wx_card}";
-                            Log.i("test", "sendData = " + sendData);
-                            NetworkRequest mLoginRequest = new NetworkRequest(sendData);
-                            mLoginRequest.start();
-                            mLoginRequest.setListener(PayMoneyActivity.this);
-
-                        } else if (TextUtils.equals(activity, "CollectionActivity")) {//收款码
+                        if (TextUtils.equals(activity, "CollectionActivity")) {//收款码
 
 //                            intent = new Intent(PayMoneyActivity.this, ShouKuanMaActivity.class);
                             intent = new Intent(PayMoneyActivity.this, ChoseShouKuanMaActivity.class);
@@ -328,38 +292,14 @@ public class PayMoneyActivity extends BaseActivity implements NetworkRequest.Rep
         }
     }
 
-    private void setStatus(String result) {//{0|会员卡号|会员名称|交易时间|支付类型|交易状态|会员卡余额|实收金额|会员等级|tag_scan_vip}
+    private void setStatus(String result) {
         loadingDialog.dismiss();
-        Log.i("test", "paymonet = result = " + result);//{0|会员卡收款成功|2.7|00000000006|ggg|3|2016/12/6 17:29:33|VIP测试|tag}
-//        {0|00000000006|ggg|2016/12/7 9:28:33|积分余额支付|交易成功|9876|2|金牌会员|tag_scan_vip}
+        Log.i("test", "paymonet = result = " + result);
         String[] arr = null;
         if (result != null) {
             arr = result.replace("{", "").replace("}", "").split("\\|");
             if (arr[0].equals("0")) {
-                if (TextUtils.equals(activity, "MemberConsumptionActivity")) {//会员消费
-                    intent = new Intent(PayMoneyActivity.this, HeXiaoSuccessActivity.class);
-                    intent.putExtra("Activity", "MemberConsumptionActivity");
-                    intent.putExtra("Text_sucess", arr[1]);
-                    intent.putExtra("Text_money", "￥" + arr[2]);
-                    intent.putExtra("Text_one", arr[3]);
-                    intent.putExtra("Text_two", arr[4]);
-                    intent.putExtra("Text_three", arr[5]);
-                    intent.putExtra("Text_four", arr[2]);
-                    intent.putExtra("Text_five", arr[6]);
-                    intent.putExtra("Text_shouyingyuan", arr[7]);
-                    startActivity(intent);
-                } else if (TextUtils.equals(activity, "JiFenActivity")) {//积分消费
-                    intent = new Intent(PayMoneyActivity.this, HeXiaoSuccessActivity.class);
-                    intent.putExtra("Activity", "JiFenActivity");
-                    intent.putExtra("Text_money", arr[7]);
-                    intent.putExtra("Text_one", arr[1]);
-                    intent.putExtra("Text_two", arr[2]);
-                    intent.putExtra("Text_three", arr[7]);
-                    intent.putExtra("Text_four", arr[6]);
-                    intent.putExtra("Text_five", arr[3]);
-                    intent.putExtra("Text_shouyingyuan", appContext.getRealName());
-                    startActivity(intent);
-                } else if (TextUtils.equals(activity, "KaquanhexiaoActivity")) {//卡券核销
+                if (TextUtils.equals(activity, "KaquanhexiaoActivity")) {//卡券核销
 //                    {0|核销成功|2016/12/7 15:00:04|tag_scan_wxcard}
                     intent = new Intent(PayMoneyActivity.this, HeXiaoSuccessActivity.class);
                     intent.putExtra("Activity", "KaquanhexiaoActivity");
@@ -377,53 +317,19 @@ public class PayMoneyActivity extends BaseActivity implements NetworkRequest.Rep
                 builder.setTitle("消费失败");
                 builder.setMessage(arr[1]);
 
-                if (TextUtils.equals(activity, "MemberConsumptionActivity")) {
-                    builder.setPositiveButton("会员充值", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            //跳转到会员充值界面
-                            activity = "MemberIncomeActivity";
-                            headViewTitle.setText("会员充值");
-                            tvMarked.setText("请输入充值金额");
-                            paymoneyEdit.setText("");
-//                            intent = new Intent(PayMoneyActivity.this, PayMoneyActivity.class);
-//                            intent.putExtra("Activity", "MemberIncomeActivity");
-//                            intent.putExtra("MemberNumber", memberNumber);
-//                            intent.putExtra("MemberName", memberName);
-//                            intent.putExtra("MemberType", memberType);
-//                            intent.putExtra("MemberMoney", memberMoney);
-//                            startActivity(intent);
-                            dialog.dismiss();
-                        }
-                    });
-                    builder.setNegativeButton("直接消费", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            //跳转到扫码消费界面
-                            intent = new Intent(PayMoneyActivity.this, SaoMaActivity.class);
-                            intent.putExtra("Activity", "SaoMaActivity");
-                            intent.putExtra("paymoney", paymoney);
-                            startActivity(intent);
-                            dialog.dismiss();
-                        }
-                    });
-
-                } else {
-                    builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    });
-                }
-
+                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
 
                 Dialog noticeDialog = builder.create();
                 noticeDialog.setCanceledOnTouchOutside(false);
                 noticeDialog.show();
             }
-        }else {
-            ToastUtils.showToast(PayMoneyActivity.this,"网络连接超时，请重试！");
+        } else {
+            ToastUtils.showToast(PayMoneyActivity.this, "网络连接超时，请重试！");
         }
 
     }

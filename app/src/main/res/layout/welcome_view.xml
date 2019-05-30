@@ -2,12 +2,25 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <android.support.v4.view.ViewPager
         android:id="@+id/welcome_viewpager"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" />
+
+    <TextView
+        android:id="@+id/tv_return"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="26dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/guide_skip"
+        android:gravity="center"
+        android:text="跳过"
+        android:textColor="#F2143F"
+        android:textSize="@dimen/dp_14" />
 
     <LinearLayout
         android:id="@+id/points_view"
@@ -15,11 +28,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/dp_10"
+        android:layout_marginBottom="@dimen/dp_36"
         android:gravity="bottom|center_horizontal"
-        android:orientation="horizontal"
-         >
-    </LinearLayout>
+        android:orientation="horizontal" />
 
     <ImageView
         android:id="@+id/welcome_skip"
@@ -27,10 +38,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/dp_72"
-        android:visibility="gone"
         android:layout_marginRight="20dip"
-        android:background="@drawable/ljqu" >
-    </ImageView>
+        android:layout_marginBottom="@dimen/dp_72"
+        android:background="@drawable/ljqu"
+        android:visibility="gone"></ImageView>
 
 </RelativeLayout>

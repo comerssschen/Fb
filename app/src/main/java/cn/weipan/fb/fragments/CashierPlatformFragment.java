@@ -49,16 +49,16 @@ public class CashierPlatformFragment extends BaseFragment implements View.OnClic
     private Handler handler = new Handler() {
         public void handleMessage(android.os.Message msg) {
             viewpager.setCurrentItem(viewpager.getCurrentItem() + 1);// 收到消息，指向下一个页面
-            handler.sendEmptyMessageDelayed(msgWhat, 4000);// 5S后在发送一条消息，由于在handleMessage()方法中，造成死循环。
+            handler.sendEmptyMessageDelayed(msgWhat, 3000);// 5S后在发送一条消息，由于在handleMessage()方法中，造成死循环。
         }
     };
     private LinearLayout ll_dots;
     private TextView tv_ratio;
     private TextView tv_total;
     private TextView tv_desc;
-    private String[] des_arrays;
-    private String[] des_arrayss;
-    private String[] des_arraysss;
+    private String[] des_arrays = new String[]{"今日收款合计(元)", "本月收款合计(元)"};
+    private String[] des_arrayss = new String[]{"0.00", "0.00"};
+    private String[] des_arraysss = new String[]{"（合计0笔）", "（合计0笔）"};
     private List<TextView> tv_dots_list = new ArrayList<TextView>();
     private TextView tv_dot;
     private ImageView bannerImageView;
@@ -80,6 +80,7 @@ public class CashierPlatformFragment extends BaseFragment implements View.OnClic
 
     //初始化界面
     protected void initView(View mChildContentView, Bundle savedInstanceState) {
+        Log.i("test", System.currentTimeMillis() + "initView");
         //注册接受消息的eventbus
         aDefault = EventBus.getDefault();
         aDefault.register(CashierPlatformFragment.this);
@@ -91,8 +92,6 @@ public class CashierPlatformFragment extends BaseFragment implements View.OnClic
         tv_ratio = mChildContentView.findViewById(R.id.tv_ratio);
         tv_desc = mChildContentView.findViewById(R.id.tv_desc);
         tv_total = mChildContentView.findViewById(R.id.tv_total);
-        initDesData();// 图片描述数据
-        initIndicator();//监听pager的变化
         TextView headerTitle = mChildContentView.findViewById(R.id.head_view_title);
         headerTitle.setText("收银主页");
         LinearLayout fanhui = mChildContentView.findViewById(R.id.ll_fanhui);
@@ -122,18 +121,12 @@ public class CashierPlatformFragment extends BaseFragment implements View.OnClic
         //banner广告图
         bannerImageView = mChildContentView.findViewById(R.id.iv_image_banner);
         bannerImageView.setOnClickListener(this);
+        initIndicator();//监听pager的变化
         getTodayCount();
-        handler.sendEmptyMessageDelayed(msgWhat, 4000);
         getBannerUrl();
         getUserMassage();
     }
 
-    //初始化统计轮播数据
-    private void initDesData() {
-        des_arrays = new String[]{"今日收款合计(元)", "本月收款合计(元)"};
-        des_arrayss = new String[]{totalDayMoney, totalMonthMoney};
-        des_arraysss = new String[]{"（合计" + totalDayCount + "笔）", "（合计" + totalMonthCount + "笔）"};
-    }
 
     //点击事件
     @Override
@@ -154,7 +147,6 @@ public class CashierPlatformFragment extends BaseFragment implements View.OnClic
                 intent.putExtra("Activity", "CollectionActivity");
                 startActivity(intent);
                 break;
-
             //卡券收款
             case R.id.ll_kaquanshoukuan:
 //                ToastUtils.showToast(getActivity(), "开发中，敬请期待！");
@@ -266,6 +258,13 @@ public class CashierPlatformFragment extends BaseFragment implements View.OnClic
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.i("test", " cash  onResume");
+        handler.sendEmptyMessageDelayed(msgWhat, 3000);
+    }
+
 
     @Override
     public void onHiddenChanged(boolean hidden) {
@@ -323,7 +322,8 @@ public class CashierPlatformFragment extends BaseFragment implements View.OnClic
                         totalDayMoney = bannerBean.optString("TotalDayMoney");
                         totalMonthCount = bannerBean.optString("TotalMonthCount");
                         totalMonthMoney = bannerBean.optString("TotalMonthMoney");
-                        initDesData();
+                        des_arrayss = new String[]{totalDayMoney, totalMonthMoney};
+                        des_arraysss = new String[]{"（合计" + totalDayCount + "笔）", "（合计" + totalMonthCount + "笔）"};
                     } else {
                         ToastUtils.showToast(getActivity(), object.optString("Error"));
                     }

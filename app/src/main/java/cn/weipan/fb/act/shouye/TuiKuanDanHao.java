@@ -68,11 +68,7 @@ public class TuiKuanDanHao extends BaseActivity implements NetworkRequest.Repons
 
         loadingDialog = new LoadingDialog(TuiKuanDanHao.this, "提交中...");
 
-        if (TextUtils.equals(activity, "MemberConsumptionActivity")) {//会员消费
-            headViewTitle.setText("会员消费");
-            tvReminder.setText("会员卡号");
-            danhaoEdit.setHint("请输入会员卡号");
-        } else if (TextUtils.equals(activity, "TuiKuanActivity")) {//退款
+        if (TextUtils.equals(activity, "TuiKuanActivity")) {//退款
             headViewTitle.setText("退款");
             tvReminder.setText("退款单号");
             danhaoEdit.setHint("请输入商户订单号");
@@ -84,40 +80,21 @@ public class TuiKuanDanHao extends BaseActivity implements NetworkRequest.Repons
             headViewTitle.setText("卡券核销");
             tvReminder.setText("卡券号码");
             danhaoEdit.setHint("请输入卡券号码");
-        } else if (TextUtils.equals(activity, "MemberIncomeActivity")) {//会员充值
-            headViewTitle.setText("会员充值");
-            tvReminder.setText("会员卡号");
-            danhaoEdit.setHint("请输入会员卡号");
-        } else if (TextUtils.equals(activity, "JiFenActivity")) {//积分消费
-            headViewTitle.setText("积分消费");
-            tvReminder.setText("会员卡号");
-            danhaoEdit.setHint("请输入会员卡号");
         }
-
-
         randomStr = getRandomString(8);
         miyao = getMiyao(randomStr);
     }
 
 
     //请求回调
-    private void setStatus(String result) {//{0|0.01|0.01|2016/10/28 14:08:42|支付成功|4002632001201610287962568701|00000419000000272016102814084
+    private void setStatus(String result) {
         loadingDialog.dismiss();
         Log.i("test", "result = " + result);
         String[] arr = null;
         if (result != null) {
             arr = result.replace("{", "").replace("}", "").split("\\|");
             if (arr[0].equals("0")) {
-                if (TextUtils.equals(activity, "MemberConsumptionActivity")) {//会员消费
-                    Intent intent = new Intent(TuiKuanDanHao.this, MemberDetailsActivity.class);
-                    intent.putExtra("MemberNumber", arr[1]);
-                    intent.putExtra("MemberName", arr[2]);
-                    intent.putExtra("MemberType", arr[3]);
-                    intent.putExtra("MemberMoney", arr[4]);
-                    intent.putExtra("Activity", "MemberConsumptionActivity");
-                    startActivity(intent);
-
-                } else if (TextUtils.equals(activity, "TuiKuanActivity")) {//退款
+                if (TextUtils.equals(activity, "TuiKuanActivity")) {//退款
                     intent = new Intent(TuiKuanDanHao.this, TuiKuanZhangDanXiangQing.class);
                     intent.putExtra("DingDanJingE", arr[7]);
                     intent.putExtra("ShiShouJinE", arr[8]);
@@ -128,24 +105,6 @@ public class TuiKuanDanHao extends BaseActivity implements NetworkRequest.Repons
                     intent.putExtra("ShouYinYuan", appContext.getRealName());
                     intent.putExtra("type", arr[3]);
                     intent.putExtra("FuKuanFangShi", arr[4]);
-                    startActivity(intent);
-                } else if (TextUtils.equals(activity, "MemberIncomeActivity")) {//会员充值
-                    Intent intent = new Intent(TuiKuanDanHao.this, MemberDetailsActivity.class);
-                    intent.putExtra("MemberNumber", arr[1]);
-                    intent.putExtra("MemberName", arr[2]);
-                    intent.putExtra("MemberType", arr[3]);
-                    intent.putExtra("MemberMoney", arr[4]);
-                    intent.putExtra("Activity", "MemberIncomeActivity");
-                    startActivity(intent);
-
-
-                } else if (TextUtils.equals(activity, "JiFenActivity")) {//积分消费
-                    Intent intent = new Intent(TuiKuanDanHao.this, MemberDetailsActivity.class);
-                    intent.putExtra("MemberNumber", arr[1]);
-                    intent.putExtra("MemberName", arr[2]);
-                    intent.putExtra("MemberType", arr[3]);
-                    intent.putExtra("MemberMoney", arr[5]);
-                    intent.putExtra("Activity", "JiFenActivity");
                     startActivity(intent);
                 } else if (TextUtils.equals(activity, "KaquanhexiaoActivity")) {//卡券核销
                     intent = new Intent(appContext, PayMoneyActivity.class);
@@ -212,7 +171,7 @@ public class TuiKuanDanHao extends BaseActivity implements NetworkRequest.Repons
                 noticeDialog.show();
             }
         } else {
-            ToastUtils.showToast(TuiKuanDanHao.this,"网络连接超时，请重试！");
+            ToastUtils.showToast(TuiKuanDanHao.this, "网络连接超时，请重试！");
         }
 
     }
@@ -249,38 +208,14 @@ public class TuiKuanDanHao extends BaseActivity implements NetworkRequest.Repons
                         NetworkRequest mLoginRequest = new NetworkRequest(sendData);
                         mLoginRequest.start();
                         mLoginRequest.setListener(TuiKuanDanHao.this);
-                    } else if (TextUtils.equals(activity, "JiFenActivity")) {//积分消费
-                        sendData = "{app" + "|" + appContext.getDeviceId() + "|" + appContext.getCashId() + "|131|" + danhaoEdit.getText().toString().trim() + "|" + randomStr + miyao + "|tag_scan_jd}";
-                        Log.i("test", "sendData = " + sendData);
-                        NetworkRequest mLoginRequest = new NetworkRequest(sendData);
-                        mLoginRequest.start();
-                        mLoginRequest.setListener(TuiKuanDanHao.this);
-                    } else if (TextUtils.equals(activity, "MemberConsumptionActivity")) {//会员消费
-                        sendData = "{app" + "|" + appContext.getDeviceId() + "|" + appContext.getCashId() + "|131|" + danhaoEdit.getText().toString().trim() + "|" + randomStr + miyao + "|tag_scan_jd}";
-                        Log.i("test", "sendData = " + sendData);
-                        NetworkRequest mLoginRequest = new NetworkRequest(sendData);
-                        mLoginRequest.start();
-                        mLoginRequest.setListener(TuiKuanDanHao.this);
                     } else if (TextUtils.equals(activity, "KaquanshoukuanActivity")) {//卡券收款
-
                         sendData = "{app" + "|" + appContext.getDeviceId() + "|" + appContext.getCashId() + "|121|" + danhaoEdit.getText().toString().trim() + "|" + randomStr + miyao + "|tag_wx_card}";
                         Log.i("test", "sendData = " + sendData);
                         NetworkRequest mLoginRequest = new NetworkRequest(sendData);
                         mLoginRequest.start();
                         mLoginRequest.setListener(TuiKuanDanHao.this);
-
-
                     } else if (TextUtils.equals(activity, "KaquanhexiaoActivity")) {//卡券核销
-
                         sendData = "{app" + "|" + appContext.getDeviceId() + "|" + appContext.getCashId() + "|121|" + danhaoEdit.getText().toString().trim() + "|" + randomStr + miyao + "|tag_wx_card}";
-                        Log.i("test", "sendData = " + sendData);
-                        NetworkRequest mLoginRequest = new NetworkRequest(sendData);
-                        mLoginRequest.start();
-                        mLoginRequest.setListener(TuiKuanDanHao.this);
-
-
-                    } else if (TextUtils.equals(activity, "MemberIncomeActivity")) {//会员充值
-                        sendData = "{app" + "|" + appContext.getDeviceId() + "|" + appContext.getCashId() + "|131|" + danhaoEdit.getText().toString().trim() + "|" + randomStr + miyao + "|tag_scan_jd}";
                         Log.i("test", "sendData = " + sendData);
                         NetworkRequest mLoginRequest = new NetworkRequest(sendData);
                         mLoginRequest.start();
