@@ -1,18 +1,8 @@
 package cn.weipan.fb.act;
 
-import android.Manifest;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapShader;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Shader;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Base64;
@@ -31,16 +21,11 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Transformation;
-import com.yanzhenjie.permission.AndPermission;
-import com.yanzhenjie.permission.Rationale;
-import com.yanzhenjie.permission.RationaleListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -50,9 +35,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.weipan.fb.R;
 import cn.weipan.fb.bean.InformationBean;
-import cn.weipan.fb.constact.Constant;
+import cn.weipan.fb.common.Constant;
+import cn.weipan.fb.utils.CircleTransform;
 import cn.weipan.fb.utils.HttpUtils;
 import cn.weipan.fb.utils.LoadingDialog;
+import cn.weipan.fb.utils.TakePictureManager;
 import cn.weipan.fb.utils.ToastUtils;
 
 
@@ -62,7 +49,6 @@ import cn.weipan.fb.utils.ToastUtils;
  * 邮箱：904359289@QQ.com.
  */
 public class InformationActivity extends BaseActivity implements View.OnClickListener {
-    private static String path = "/sdcard/myHead";//sd路径
     @BindView(R.id.ll_fanhui)
     LinearLayout llFanhui;
     @BindView(R.id.head_view_title)
@@ -95,11 +81,10 @@ public class InformationActivity extends BaseActivity implements View.OnClickLis
     TextView tvEndtime;
     @BindView(R.id.rl_finish)
     RelativeLayout rlFinish;
-    private Bitmap head;//头像Bitmap
-    private File fileSD;
-    private File file;
     private InputMethodManager imm;
     private LoadingDialog loadingDialog;
+    private Bitmap head;
+    private TakePictureManager takePictureManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,13 +93,6 @@ public class InformationActivity extends BaseActivity implements View.OnClickLis
         ButterKnife.bind(this);
         initView();
         getUserMassage();
-
-        //检查相机权限
-        AndPermission.with(this)
-                .requestCode(101)
-                .permission(Manifest.permission.CAMERA)
-                .rationale(mRationaleListener)
-                .send();
     }
 
     //初始化控件信息
@@ -156,26 +134,7 @@ public class InformationActivity extends BaseActivity implements View.OnClickLis
                         String imageUrl;
                         if (!TextUtils.isEmpty(da.getImageurl())) {
                             imageUrl = Constant.URL + da.getImageurl();
-                            Picasso.with(InformationActivity.this).load(imageUrl).transform(new Transformation() {
-                                @Override
-                                public Bitmap transform(Bitmap source) {
-                                    int width = source.getWidth();
-                                    int height = source.getHeight();
-                                    Bitmap bitmap = Bitmap.createBitmap(width, height, source.getConfig());
-                                    Canvas canvas = new Canvas(bitmap);
-                                    float radius = Math.min(width, height) * 0.5f;
-                                    Paint paint = new Paint();
-                                    paint.setShader(new BitmapShader(source, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP));
-                                    canvas.drawCircle(width * 0.5f, height * 0.5f, radius, paint);
-                                    source.recycle();
-                                    return bitmap;
-                                }
-
-                                @Override
-                                public String key() {
-                                    return "key";
-                                }
-                            }).into(ivPersonal, new Callback() {
+                            Picasso.with(InformationActivity.this).load(imageUrl).transform(new CircleTransform()).into(ivPersonal, new Callback() {
                                 @Override
                                 public void onSuccess() {
                                 }
@@ -213,134 +172,12 @@ public class InformationActivity extends BaseActivity implements View.OnClickLis
         });
     }
 
-    //相机权限回调结果
-    private RationaleListener mRationaleListener = new RationaleListener() {
-        @Override
-        public void showRequestPermissionRationale(int requestCode, final Rationale rationale) {
-            new AlertDialog.Builder(InformationActivity.this)
-                    .setTitle("请打开拍照权限")
-                    .setMessage("请打开拍照权限")
-                    .setPositiveButton("拒绝", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                            rationale.resume();// 用户同意继续申请。
-                        }
-                    })
-                    .setNegativeButton("同意", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.cancel();
-                            rationale.cancel(); // 用户拒绝申请。
-                        }
-                    }).show();
-        }
-    };
-
-    //拍照
-    private void takePhoto() {
-        String filepath = null;
-        boolean sdExist = Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
-        if (!sdExist) {
-            return;
-        } else {
-            fileSD = new File(path);
-            if (fileSD.exists()) {
-                filepath = path + "/" + System.currentTimeMillis() + ".jpg";
-            } else {
-                fileSD.mkdir();
-                filepath = fileSD.getAbsolutePath() + "/" + System.currentTimeMillis() + ".jpg";
-            }
-            file = new File(filepath);
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
-            startActivityForResult(intent, 2);
-        }
-    }
-
-    //拍照结果回调
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        Log.i("test", "requestCode = " + requestCode);
-        Log.i("test", "resultCode = " + resultCode);
-
-        switch (requestCode) {
-            case 1:
-                if (resultCode == RESULT_OK) {
-                    cropPhoto(data.getData());//裁剪图片
-                }
-                break;
-            case 2:
-                if (resultCode == RESULT_OK) {
-                    cropPhoto(Uri.fromFile(file));//裁剪图片
-                }
-                break;
-            case 3:
-                if (data != null) {
-                    Bundle extras = data.getExtras();
-                    head = extras.getParcelable("data");
-                    if (head != null) {
-                        /**
-                         * 上传服务器代码
-                         */
-                        head = setBitmapToCircle(head);
-                        ivPersonal.setImageBitmap(head);//用ImageView显示出来
-
-                    }
-                }
-                break;
-            default:
-                break;
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    /**
-     * 调用系统的裁剪
-     * 调用系统的裁剪
-     *
-     * @param uri
-     */
-    public void cropPhoto(Uri uri) {
-        Intent intent = new Intent("com.android.camera.action.CROP");
-        intent.setDataAndType(uri, "image/*");
-        intent.putExtra("crop", "true");
-        // aspectX aspectY 是宽高的比例
-        intent.putExtra("aspectX", 1);
-        intent.putExtra("aspectY", 1);
-        // outputX outputY 是裁剪图片宽高
-        intent.putExtra("outputX", 150);
-        intent.putExtra("outputY", 150);
-        intent.putExtra("return-data", true);
-        startActivityForResult(intent, 3);
-    }
 
     public String Bitmap2StrByBase64(Bitmap bit) {
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
         bit.compress(Bitmap.CompressFormat.JPEG, 40, bos);//参数100表示不压缩
         byte[] bytes = bos.toByteArray();
         return Base64.encodeToString(bytes, Base64.DEFAULT);
-    }
-
-    //把图片变成圆形
-    private Bitmap setBitmapToCircle(Bitmap head) {
-        int width = head.getWidth();
-        int height = head.getHeight();
-        Bitmap bitmap = Bitmap.createBitmap(width, height, head.getConfig());
-        Canvas canvas = new Canvas(bitmap);
-        float radius = Math.min(width, height) * 0.5f;
-
-        Paint paint = new Paint();
-        paint.setShader(new BitmapShader(head, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP));
-        canvas.drawCircle(width * 0.5f, height * 0.5f, radius, paint);
-        head.recycle();
-        return bitmap;
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 
     /**
@@ -350,7 +187,6 @@ public class InformationActivity extends BaseActivity implements View.OnClickLis
         String randomString = getRandomString(8);
         String url = Constant.URL + "/api/user/UpdateUser";
         Map<String, Object> map = new HashMap<>();
-
         map.put("content", getContent(randomString));
         map.put("key", getMiyaoKey(randomString));
         map.put("QQ", etQqnumber.getText().toString().trim());
@@ -399,24 +235,18 @@ public class InformationActivity extends BaseActivity implements View.OnClickLis
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.ll_fanhui:
-//                shareToTimeLine(new File(path + "head.jpg"));
                 finish();
                 break;
             case R.id.rl_personal:
-
-                new AlertDialog.Builder(InformationActivity.this).setCancelable(true).setTitle("选择来源").setItems(new String[]{"拍照", "从相册选择"}, new DialogInterface.OnClickListener() {
+                takePictureManager = new TakePictureManager(InformationActivity.this, new TakePictureManager.takePictureCallBackListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        if (which == 0) {
-                            takePhoto();
-                        } else if (which == 1) {
-                            Intent intent1 = new Intent(Intent.ACTION_PICK, null);
-                            intent1.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-                            startActivityForResult(intent1, 1);
-                        }
-                        dialog.dismiss();
+                    public void successful(Bitmap bitmap) {
+                        head = bitmap;
+                        ivPersonal.setImageBitmap(bitmap);//显示在iv上
                     }
-                }).show();
+                });
+//                takePictureManager.setTailor(1, 1, 350, 350);
+                takePictureManager.takePic();
                 break;
             case R.id.rl_qq:
                 etQqnumber.setEnabled(true);
@@ -438,4 +268,15 @@ public class InformationActivity extends BaseActivity implements View.OnClickLis
                 break;
         }
     }
+
+    //把本地的onActivityResult()方法回调绑定到对象
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == -1) {
+            takePictureManager.attachToActivityForResult(requestCode, resultCode, data);
+        }
+    }
+
+
 }

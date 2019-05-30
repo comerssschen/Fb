@@ -29,7 +29,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cn.weipan.fb.R;
-import cn.weipan.fb.constact.Constant;
+import cn.weipan.fb.common.Constant;
 import cn.weipan.fb.utils.HttpUtils;
 import cn.weipan.fb.utils.LoadingDialog;
 

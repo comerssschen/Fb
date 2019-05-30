@@ -1,1 +1,1 @@
-include ':app', ':lockpattern', ':badgeView'
+include ':app'

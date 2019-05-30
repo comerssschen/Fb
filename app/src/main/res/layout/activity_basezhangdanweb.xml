@@ -57,7 +57,7 @@
             android:textSize="@dimen/text_size_18" />
     </RelativeLayout>
 
-    <WebView
+    <com.tencent.smtt.sdk.WebView
         android:id="@+id/webview"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />

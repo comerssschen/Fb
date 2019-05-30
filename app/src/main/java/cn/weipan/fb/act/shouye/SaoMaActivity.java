@@ -6,10 +6,13 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -17,9 +20,10 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.constant.PermissionConstants;
+import com.blankj.utilcode.util.PermissionUtils;
 import com.uuzuche.lib_zxing.activity.CaptureFragment;
 import com.uuzuche.lib_zxing.activity.CodeUtils;
-import com.yanzhenjie.permission.AndPermission;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,6 +32,7 @@ import cn.weipan.fb.R;
 import cn.weipan.fb.act.BaseActivity;
 import cn.weipan.fb.act.ReceivablesSuccessActivity;
 import cn.weipan.fb.common.AppContext;
+import cn.weipan.fb.utils.DialogUtils;
 import cn.weipan.fb.utils.LoadingDialog;
 import cn.weipan.fb.utils.NetworkRequest;
 import cn.weipan.fb.utils.ToastUtils;
@@ -78,17 +83,29 @@ public class SaoMaActivity extends BaseActivity implements NetworkRequest.Repons
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saoma);
         ButterKnife.bind(this);
-        AndPermission.with(this)
-                .permission(Manifest.permission.CAMERA)
-                .send();
-//        intent.putExtra("Activity", "MemberIncomeActivity");
         payMoney = getIntent().getStringExtra("paymoney");
         activity = getIntent().getStringExtra("Activity");
         memberNumber = getIntent().getStringExtra("memberNumber");
         Log.i("test", "SaoMaActivity =memberNumber " + memberNumber);
         appContext = (AppContext) this.getApplication();
         TelephonyManager tm = (TelephonyManager) this.getSystemService(TELEPHONY_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
         imei = tm.getDeviceId();
+
+        PermissionUtils.permission(PermissionConstants.PHONE).callback(new PermissionUtils.SimpleCallback() {
+            @Override
+            public void onGranted() {
+
+            }
+
+            @Override
+            public void onDenied() {
+                ToastUtils.showToast(SaoMaActivity.this, "请检查权限");
+                finish();
+            }
+        }).request();
 
         captureFragment = new CaptureFragment();
         // 为二维码扫描界面设置定制化界面

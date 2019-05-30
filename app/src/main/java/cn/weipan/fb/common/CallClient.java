@@ -3,9 +3,10 @@ package cn.weipan.fb.common;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ViewSwitcher;
+
+import com.tencent.smtt.sdk.WebView;
+import com.tencent.smtt.sdk.WebViewClient;
 
 public class CallClient extends WebViewClient {
 

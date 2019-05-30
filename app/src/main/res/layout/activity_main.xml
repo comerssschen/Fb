@@ -33,14 +33,14 @@
             android:orientation="horizontal">
 
             <RadioButton
-                android:background="@color/transparent"
                 android:id="@+id/rb_home"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@color/transparent"
                 android:button="@null"
-                android:drawablePadding="@dimen/text_size_3"
                 android:drawableTop="@drawable/home_selector"
+                android:drawablePadding="@dimen/text_size_3"
                 android:gravity="center"
                 android:padding="@dimen/text_size_10"
                 android:text="收银主页"
@@ -48,15 +48,15 @@
                 android:textSize="@dimen/text_size_10" />
 
             <RadioButton
-                android:background="@color/transparent"
                 android:id="@+id/rb_invest"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@color/transparent"
                 android:button="@null"
                 android:checked="false"
-                android:drawablePadding="@dimen/text_size_3"
                 android:drawableTop="@drawable/invest_selector"
+                android:drawablePadding="@dimen/text_size_3"
                 android:gravity="center"
                 android:padding="@dimen/text_size_10"
                 android:text="账单统计"
@@ -64,15 +64,15 @@
                 android:textSize="@dimen/text_size_10" />
 
             <RadioButton
-                android:background="@color/transparent"
                 android:id="@+id/rb_more"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@color/transparent"
                 android:button="@null"
                 android:checked="false"
-                android:drawablePadding="@dimen/text_size_3"
                 android:drawableTop="@drawable/me_selector"
+                android:drawablePadding="@dimen/text_size_3"
                 android:gravity="center"
                 android:padding="@dimen/text_size_10"
                 android:text="老板赚钱"
@@ -80,15 +80,15 @@
                 android:textSize="@dimen/text_size_10" />
 
             <RadioButton
-                android:background="@color/transparent"
                 android:id="@+id/rb_message"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="@color/transparent"
                 android:button="@null"
                 android:checked="false"
-                android:drawablePadding="@dimen/text_size_3"
                 android:drawableTop="@drawable/more_selector"
+                android:drawablePadding="@dimen/text_size_3"
                 android:gravity="center"
                 android:padding="@dimen/text_size_10"
                 android:text="通知消息"
@@ -128,7 +128,6 @@
                     android:layout_height="60dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="@dimen/text_size_10"
-                    android:scaleType="fitXY"
                     android:src="@drawable/login_avatar" />
 
                 <RelativeLayout
@@ -201,39 +200,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/text_size_1"
-                android:layout_marginLeft="@dimen/dp_60"
-                android:background="@color/chakan_te" />
-
-            <LinearLayout
-                android:id="@+id/ll_gesture_pwd"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="@dimen/text_size_15">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/text_size_10"
-                    android:src="@drawable/shoushimima" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="@dimen/text_size_10"
-                    android:layout_toRightOf="@+id/iv_cotent"
-                    android:text="手势密码"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_14" />
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/text_size_1"
-                android:layout_marginLeft="@dimen/dp_60"
+                android:layout_marginLeft="@dimen/text_size_20"
                 android:background="@color/chakan_te" />
 
             <LinearLayout

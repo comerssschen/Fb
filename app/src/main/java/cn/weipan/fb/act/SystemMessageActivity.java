@@ -5,15 +5,17 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
+
+import com.tencent.smtt.sdk.WebSettings;
+import com.tencent.smtt.sdk.WebView;
+import com.tencent.smtt.sdk.WebViewClient;
+
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import cn.weipan.fb.R;
 import cn.weipan.fb.common.CallClient;
-import cn.weipan.fb.constact.Constant;
+import cn.weipan.fb.common.Constant;
 import cn.weipan.fb.utils.LoadingDialog;
 
 /**

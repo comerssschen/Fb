@@ -3,31 +3,44 @@ package cn.weipan.fb.common;
 import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 
-import com.yanzhenjie.permission.AndPermission;
+import com.blankj.utilcode.constant.PermissionConstants;
+import com.blankj.utilcode.util.ObjectUtils;
+import com.blankj.utilcode.util.PermissionUtils;
+import com.blankj.utilcode.util.PhoneUtils;
 
-import cn.jpush.android.api.JPushInterface;
 import cn.weipan.fb.R;
 import cn.weipan.fb.act.BaseNoLoginActivity;
-import cn.weipan.fb.act.GestureLoginActivity;
 import cn.weipan.fb.act.LoginNewActivity;
+import cn.weipan.fb.act.MainActivity;
 import cn.weipan.fb.act.WelcomeActivity;
-import cn.weipan.fb.constact.ACache;
-import cn.weipan.fb.constact.Constant;
+import cn.weipan.fb.service.TagAliasOperatorHelper;
+import cn.weipan.fb.utils.NetworkRequest;
 import cn.weipan.fb.utils.SharedPre;
+import cn.weipan.fb.utils.ToastUtils;
 
-public class Appstart extends BaseNoLoginActivity {
+import static cn.weipan.fb.service.TagAliasOperatorHelper.ACTION_SET;
+import static cn.weipan.fb.service.TagAliasOperatorHelper.sequence;
+
+public class Appstart extends BaseNoLoginActivity implements NetworkRequest.ReponseListener {
     private static final String SHARE_APP_TAG = "isfirst";
     AppContext appContext;
     private View view;
-    private ACache aCache;
-    private String gesturePassword;
+    private SharedPreferences setting;
+    private Intent intent;
+    private boolean user_first;
+    private String imei;
+    private String alias;
+    private boolean loginSucess;
+    private SharedPre shared;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,73 +50,108 @@ public class Appstart extends BaseNoLoginActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         view = View.inflate(this, R.layout.app_start, null);
         setContentView(view);
-        AndPermission.with(Appstart.this)
-                .permission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .permission(Manifest.permission.READ_PHONE_STATE)
-                .send();
+        shared = new SharedPre(this);
         ScaleAnimation scaleAnimation = new ScaleAnimation(1.0f, 1.2f, 1.0f, 1.2f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         scaleAnimation.setDuration(2000);
-        aCache = ACache.get(Appstart.this);
-        gesturePassword = aCache.getAsString(Constant.GESTURE_PASSWORD);
         scaleAnimation.setFillAfter(true);
         scaleAnimation.setAnimationListener(
                 new Animation.AnimationListener() {
                     @Override
                     public void onAnimationStart(Animation animation) {
+                        setting = getSharedPreferences(SHARE_APP_TAG, 0);
+                        user_first = setting.getBoolean("FIRST", true);
+                        if (!user_first && PermissionUtils.isGranted(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                            login();
+                        }
                     }
 
                     @Override
                     public void onAnimationEnd(Animation animation) {
-
-                        Intent intent = null;
-                        SharedPreferences setting = getSharedPreferences(SHARE_APP_TAG, 0);
-                        Boolean user_first = setting.getBoolean("FIRST", true);
-                        if (user_first) {//第一次
-                            setting.edit().putBoolean("FIRST", false).commit();
-                            intent = new Intent(Appstart.this, WelcomeActivity.class);
-                            startActivity(intent);
-                            finish();
-                        } else {
-                            if (gesturePassword == null || "".equals(gesturePassword)) {
-                                intent = new Intent(Appstart.this, LoginNewActivity.class);
+                        PermissionUtils.permission(PermissionConstants.STORAGE, PermissionConstants.PHONE, PermissionConstants.CAMERA).callback(new PermissionUtils.SimpleCallback() {
+                            @Override
+                            public void onGranted() {
+                                if (user_first) {//第一次
+                                    setting.edit().putBoolean("FIRST", false).commit();
+                                    intent = new Intent(Appstart.this, WelcomeActivity.class);
+                                } else {
+                                    if (loginSucess) {
+                                        TagAliasOperatorHelper.TagAliasBean tagAliasBean = new TagAliasOperatorHelper.TagAliasBean();
+                                        tagAliasBean.action = ACTION_SET;
+                                        sequence++;
+                                        tagAliasBean.alias = alias;
+                                        tagAliasBean.isAliasAction = true;
+                                        TagAliasOperatorHelper.getInstance().handleAction(getApplicationContext(), sequence, tagAliasBean);
+                                        intent = new Intent(Appstart.this, MainActivity.class);
+                                    } else {
+                                        intent = new Intent(Appstart.this, LoginNewActivity.class);
+                                    }
+                                }
                                 startActivity(intent);
                                 finish();
-                            } else {
-                                SharedPre shared = new SharedPre(Appstart.this);
-                                String password = shared.getPassword();
-                                if (TextUtils.isEmpty(password)) {
-                                    intent = new Intent(Appstart.this, LoginNewActivity.class);
-                                    startActivity(intent);
-                                    finish();
-                                } else {
-                                    intent = new Intent(Appstart.this, GestureLoginActivity.class);
-                                    intent.putExtra("Activity", "Appstart");
-                                    startActivity(intent);
-                                    finish();
-                                }
                             }
-                        }
-                        finish();
+
+                            @Override
+                            public void onDenied() {
+                                Log.i("test", "onDenied");
+                                ToastUtils.showToast(Appstart.this, "请检查权限");
+                                finish();
+                            }
+                        }).request();
                     }
 
                     @Override
                     public void onAnimationRepeat(Animation animation) {
                     }
                 }
-
         );
         view.startAnimation(scaleAnimation);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        JPushInterface.onResume(appContext);
+
+    //登录
+    private void login() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        imei = PhoneUtils.getIMEI();
+        String username = shared.getUsername();
+        String password = shared.getPassword();
+        if (ObjectUtils.isEmpty(username) || ObjectUtils.isEmpty(password)) {
+            return;
+        }
+        // 参数说明： {sign|0|0|17|登陆id|密码|imei|}
+        String sendData = "{app|" + "0" + "|" + "0" + "|" + "17" + "|"
+                + username + "|"
+                + password + "|"
+                + imei + "|" + "}";
+        NetworkRequest mLoginRequest = new NetworkRequest(sendData);
+        new Thread(mLoginRequest).start();
+        mLoginRequest.setListener(Appstart.this);
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        JPushInterface.onPause(appContext);
+    public void onResult(String result) {
+        Log.i("test", "result = " + result);
+        String[] arr = null;
+        if (result != null) {
+            arr = result.replace("{", "").replace("}", "").split("\\|");
+            if (arr[0].equals("0")) {
+                loginSucess = true;
+                alias = arr[3];
+                Log.i("test", alias + "----------alias-------------");
+                appContext.setDeviceId(arr[3]);
+                appContext.setRealName(arr[2]);
+                appContext.setCashId(arr[4]);
+                appContext.setSiteId(arr[5]);
+                appContext.setWorkKey(arr[6]);
+                appContext.setCashType(arr[9]);
+                Constant.isTuiKuan = Boolean.valueOf(arr[10]);
+            } else {
+                loginSucess = false;
+            }
+        } else {
+            loginSucess = false;
+        }
     }
+
 }

@@ -1,6 +1,5 @@
 package cn.weipan.fb.act;
 
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,6 +10,7 @@ import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Shader;
+import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -22,7 +22,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
@@ -42,11 +41,14 @@ import com.squareup.picasso.Transformation;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Random;
 
 import javax.crypto.Cipher;
@@ -63,21 +65,24 @@ import cn.weipan.fb.common.FirstEvent;
 import cn.weipan.fb.common.SecondEvent;
 import cn.weipan.fb.common.ThreadEvent;
 import cn.weipan.fb.common.UpdateManager;
-import cn.weipan.fb.constact.Constant;
+import cn.weipan.fb.common.Constant;
 import cn.weipan.fb.fragments.BossFragment;
 import cn.weipan.fb.fragments.CashierPlatformFragment;
 import cn.weipan.fb.fragments.MessageFragment;
 import cn.weipan.fb.fragments.StatementFragment;
-import cn.weipan.fb.utils.DialogUtils;
+import cn.weipan.fb.service.TagAliasOperatorHelper;
 import cn.weipan.fb.utils.HttpUtils;
 import cn.weipan.fb.utils.ToastUtils;
 
+import static cn.weipan.fb.service.TagAliasOperatorHelper.ACTION_SET;
+import static cn.weipan.fb.service.TagAliasOperatorHelper.sequence;
+
 /*
-* 主界面
-* Created by cc on 2016/8/2.
-* 邮箱：904359289@QQ.com.
-*
-* */
+ * 主界面
+ * Created by cc on 2016/8/2.
+ * 邮箱：904359289@QQ.com.
+ *
+ * */
 public class MainActivity extends BaseBaseActivity implements RadioGroup.OnCheckedChangeListener, View.OnClickListener {
     public AppContext appContext;
     RadioGroup radiogroup;
@@ -96,7 +101,6 @@ public class MainActivity extends BaseBaseActivity implements RadioGroup.OnCheck
     private SharedPreferences sp;
     private String jMsg;
     private Vibrator vibrator;
-    private int count;
     boolean bisConnFlag = false;
     public DrawerLayout drawerlayout;
     public RelativeLayout rl_drawerlayout;
@@ -113,6 +117,12 @@ public class MainActivity extends BaseBaseActivity implements RadioGroup.OnCheck
     private String userInfo;
     private String error;
     private static final String SHARE_APP_TAG = "isfirst";
+    Queue<String> queue = new LinkedList<String>();
+    private boolean isFirst = true;
+    private AudioManager audioManager;
+    private int currentVolume;
+    private String[] temp;
+    private int count;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,16 +132,18 @@ public class MainActivity extends BaseBaseActivity implements RadioGroup.OnCheck
         appContext = (AppContext) getApplication();
         EventBus.getDefault().register(MainActivity.this);
         //注册声音
+        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC);
         SpeechUtility.createUtility(this, SpeechConstant.APPID + "=57c80d8f");
 //        SpeechUtility.createUtility(this, SpeechConstant.APPID + "=593e06d2");
         mTts = SpeechSynthesizer.createSynthesizer(this, null);
 
-        radiogroup = (RadioGroup) findViewById(R.id.radiogroup);
-        //添加数字
+        radiogroup = findViewById(R.id.radiogroup);
+        //添加小红点
         badge = new BadgeView(this, radiogroup);
         badge.setBadgePosition(BadgeView.POSITION_TOP_RIGHT);
+        badge.setBackground(getResources().getDrawable(R.drawable.message_shape));
         sp = getSharedPreferences("userInfo", 0);
-
         fragments = new ArrayList<>();
         cashierPlatformFragment = new CashierPlatformFragment();
         statementFragment = new StatementFragment();
@@ -151,31 +163,9 @@ public class MainActivity extends BaseBaseActivity implements RadioGroup.OnCheck
 
     //初始化界面
     private void initView() {
-        SharedPreferences settings = getSharedPreferences(SHARE_APP_TAG, 0);
-        Boolean user_first = settings.getBoolean("GESFIRST", true);
-        if (user_first) {
-            settings.edit().putBoolean("GESFIRST", false).commit();
-            DialogUtils.customDialog(this, "", "跳过", "确定", "设置手势密码后，可以通过此手势登录付吧", new DialogUtils.DialogCallback() {
-
-                @Override
-                public void PositiveButton(int i) {
-                    switch (i) {
-                        case -1:
-                            // 取消
-                            break;
-                        case -2:
-                            Intent intent = new Intent(MainActivity.this, CreateGestureActivity.class);
-                            startActivity(intent);
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            }, false, true);
-        }
-        rl_drawerlayout = (RelativeLayout) findViewById(R.id.rl_drawerlayout);//抽屉
-        llMenu = (LinearLayout) findViewById(R.id.ll_menu);//主页面
-        drawerlayout = (DrawerLayout) findViewById(R.id.drawerlayout);//drawerlayout
+        rl_drawerlayout = findViewById(R.id.rl_drawerlayout);//抽屉
+        llMenu = findViewById(R.id.ll_menu);//主页面
+        drawerlayout = findViewById(R.id.drawerlayout);//drawerlayout
         //抽屉监听
         drawerlayout.addDrawerListener(new DrawerLayout.DrawerListener() {
             @Override
@@ -199,12 +189,12 @@ public class MainActivity extends BaseBaseActivity implements RadioGroup.OnCheck
             }
         });
 
-        ivPersonal = (ImageView) findViewById(R.id.iv_personal);
-        tv_nicheng = (TextView) findViewById(R.id.tv_nicheng);
-        tv_username = (TextView) findViewById(R.id.tv_username);
-        LinearLayout persona = (LinearLayout) findViewById(R.id.ll_personal);
+        ivPersonal = findViewById(R.id.iv_personal);
+        tv_nicheng = findViewById(R.id.tv_nicheng);
+        tv_username = findViewById(R.id.tv_username);
+        LinearLayout persona = findViewById(R.id.ll_personal);
         persona.setOnClickListener(this);
-        TextView netWorkIsOpen = (TextView) findViewById(R.id.tv_network);
+        TextView netWorkIsOpen = findViewById(R.id.tv_network);
         ConnectivityManager conManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo network = conManager.getActiveNetworkInfo();
         if (network != null) {
@@ -215,13 +205,11 @@ public class MainActivity extends BaseBaseActivity implements RadioGroup.OnCheck
         } else {
             netWorkIsOpen.setText("已关闭");
         }
-        LinearLayout gesturePwd = (LinearLayout) findViewById(R.id.ll_gesture_pwd);
-        gesturePwd.setOnClickListener(this);
-        LinearLayout setting = (LinearLayout) findViewById(R.id.ll_setting);
+        LinearLayout setting = findViewById(R.id.ll_setting);
         setting.setOnClickListener(this);
-        RelativeLayout rl_Updata = (RelativeLayout) findViewById(R.id.rl_updata);
+        RelativeLayout rl_Updata = findViewById(R.id.rl_updata);
         rl_Updata.setOnClickListener(this);
-        TextView versionCode = (TextView) findViewById(R.id.tv_version_code);
+        TextView versionCode = findViewById(R.id.tv_version_code);
         PackageManager packageManager = getPackageManager();
         // getPackageName()是你当前类的包名，0代表是获取版本信息
         PackageInfo packInfo = null;
@@ -237,7 +225,7 @@ public class MainActivity extends BaseBaseActivity implements RadioGroup.OnCheck
         } else {
             versionCode.setText("");
         }
-        RelativeLayout loginOut = (RelativeLayout) findViewById(R.id.rl_login_out);
+        RelativeLayout loginOut = findViewById(R.id.rl_login_out);
         loginOut.setOnClickListener(this);
 
         String id = appContext.getDeviceId();
@@ -318,16 +306,6 @@ public class MainActivity extends BaseBaseActivity implements RadioGroup.OnCheck
                         }
                         loginName = da.getLoginName();
                         realName = da.getRealName();
-//                        String addTime = da.getAddTime();
-//                        String agentName = da.getAgentName();
-//                        cashType = da.getCashType();
-//                        int deviceID = da.getDeviceID();
-//                        int cashID = da.getCashID();
-//                        int siteID = da.getSiteID();
-//                        String endTime = da.getEndTime();
-//                        String email = da.getEmail();
-//                        String phone = da.getPhone();
-//                        String qq = da.getQQ();
                         String siteName = da.getSiteName();
                         //保存用户信息到首选项
                         SharedPreferences sp = getSharedPreferences("userInfo", 0);
@@ -335,12 +313,6 @@ public class MainActivity extends BaseBaseActivity implements RadioGroup.OnCheck
                         editor.putString("SiteName", siteName);
                         editor.putString("LoginName", loginName);
                         editor.putString("RealName", realName);
-//                        editor.putString("Phone", phone);
-//                        editor.putString("QQ", qq);
-//                        editor.putString("Email", email);
-//                        editor.putString("AgentName", agentName);
-//                        editor.putString("AddTime", addTime);
-//                        editor.putString("EndTime", endTime);
                         editor.putString("Imageurl", imageUrl);
                         editor.commit();
 
@@ -373,12 +345,6 @@ public class MainActivity extends BaseBaseActivity implements RadioGroup.OnCheck
                 intent = new Intent(MainActivity.this, InformationActivity.class);
                 startActivity(intent);
                 break;
-            //手势密码
-            case R.id.ll_gesture_pwd:
-                intent = new Intent(MainActivity.this, ShouShiMiMaActivity.class);
-                startActivity(intent);
-
-                break;
             //当前版本
             case R.id.rl_updata:
                 new Thread(new Runnable() {
@@ -399,11 +365,15 @@ public class MainActivity extends BaseBaseActivity implements RadioGroup.OnCheck
                 break;
             //退出登录
             case R.id.rl_login_out:
+                TagAliasOperatorHelper.TagAliasBean tagAliasBean = new TagAliasOperatorHelper.TagAliasBean();
+                tagAliasBean.action = ACTION_SET;
+                sequence++;
+                tagAliasBean.alias = "abcd1234";
+                tagAliasBean.isAliasAction = true;
+                TagAliasOperatorHelper.getInstance().handleAction(MainActivity.this, sequence, tagAliasBean);
                 Constant.jpushMessage.clear();
-                appContext.setDeviceId("");
                 AppManager.getAppManager().finishAllActivity();
                 intent = new Intent(MainActivity.this, LoginNewActivity.class);
-                intent.putExtra("activity", "MainActivity");
                 startActivity(intent);
                 finish();
                 break;
@@ -426,7 +396,7 @@ public class MainActivity extends BaseBaseActivity implements RadioGroup.OnCheck
     }
 
     //接收左边系统jpush消息
-    @Subscribe
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMsgsEvent(FirstEvent events) {
         jMsg = events.getMsg();
         boolean isvoice = sp.getBoolean("isvoice", true);
@@ -445,74 +415,51 @@ public class MainActivity extends BaseBaseActivity implements RadioGroup.OnCheck
             badge.setText(String.valueOf(count));
         }
         badge.show();
-
         //是否开启声音
         if (isvoice) {
-            String text = jMsg;
-            String[] temp = null;
-            temp = text.split("\\|");
-
-            Log.i("test", "main = text = " + text);
-            if (text != null) {
-                setParam2();
-                if (temp.length > 3) {
-                    if (temp[0].equals("1")) {
-                        temp[0] = "微信";
-                    } else if (temp[0].equals("2")) {
-                        temp[0] = "支付宝";
-                    } else if (temp[0].equals("3")) {
-                        temp[0] = "百度钱包";
-                    } else if (temp[0].equals("4")) {
-                        temp[0] = "现金";
-                    } else if (temp[0].equals("5")) {
-                        temp[0] = "pos机";
-                    }else if (temp[0].equals("6")) {
-                        temp[0] = "QQ钱包";
-                    } else if (temp[0].equals("7")) {
-                        temp[0] = "京东钱包";
-                    }else{
-                        temp[0] = "";
-                    }
-                    mTts.startSpeaking(temp[0] + "收款" + temp[1] + "元", mTtsListener);
-//                    AllMessagBean allMessagBean = new AllMessagBean(temp[0] + "支付收款", temp[3], temp[2], temp[1]);//标题，时间，单号，类型
-//                    Constant.jpushMessage.add(0, allMessagBean);
-                    EventBus.getDefault().post(new ThreadEvent(jMsg));
+            temp = jMsg.split("\\|");
+            if (temp.length > 3) {
+                if (temp[0].equals("1")) {
+                    temp[0] = "微信";
+                } else if (temp[0].equals("2")) {
+                    temp[0] = "支付宝";
+                } else if (temp[0].equals("3")) {
+                    temp[0] = "百度钱包";
+                } else if (temp[0].equals("4")) {
+                    temp[0] = "现金";
+                } else if (temp[0].equals("5")) {
+                    temp[0] = "pos机";
+                } else if (temp[0].equals("6")) {
+                    temp[0] = "QQ钱包";
+                } else if (temp[0].equals("7")) {
+                    temp[0] = "京东钱包";
                 } else {
-                    mTts.startSpeaking(temp[0], mTtsListener);
+                    temp[0] = "";
                 }
+                queue.offer(temp[0] + "收款" + temp[1] + "元");
+                //此处需要将语音添加到队列，保证一条播放完再播放下一条
+                //必须第一次收到消息才能在这播放，以后每次收到消息将消息添加到队列，每次播放完后去队列里面取；
+                if (isFirst) {
+                    playVoice(queue.poll());
+                    isFirst = !isFirst;
+                }
+                EventBus.getDefault().post(new ThreadEvent(jMsg));
             }
         }
 
     }
 
-    //返回按钮监听
+    //返回按钮监听,回到桌面
     @Override
     public void onBackPressed() {
-        DialogUtils.customDialog(this, "", "取消", "确定", "确定要退出付吧吗？", new DialogUtils.DialogCallback() {
-
-            @Override
-            public void PositiveButton(int i) {
-                switch (i) {
-                    case -1:
-                        // 取消
-                        break;
-                    case -2:
-                        appContext.setDeviceId("");
-                        finish();
-                        AppManager.getAppManager().AppExit(getBaseContext());
-                        break;
-
-                    default:
-                        break;
-                }
-            }
-        }, false, true);
-
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        startActivity(intent);
     }
 
     //获取秘钥
     public String getMiyao(String randomStr) {
-
         String a = "";
         try {
             Cipher cipher = Cipher.getInstance("DES/ECB/NoPadding");
@@ -536,7 +483,6 @@ public class MainActivity extends BaseBaseActivity implements RadioGroup.OnCheck
 
     //获取content
     public String getContent(String randomStr) {
-
         String a = "";
         try {
             Cipher cipher = Cipher.getInstance("DES/ECB/NoPadding");
@@ -590,7 +536,6 @@ public class MainActivity extends BaseBaseActivity implements RadioGroup.OnCheck
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         int index = group.indexOfChild(group.findViewById(checkedId));
         Fragment fragment = fragments.get(index);
-
         if (preFragment != fragment) {
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             if (!fragment.isAdded()) { // 先判断是否被add过
@@ -618,20 +563,21 @@ public class MainActivity extends BaseBaseActivity implements RadioGroup.OnCheck
      * @param
      * @return
      */
-    public void setParam2() {
+    public void playVoice(String msg) {
         // 设置合成
         mTts.setParameter(SpeechConstant.ENGINE_TYPE, SpeechConstant.TYPE_CLOUD);
+//        mTts.setParameter(SpeechConstant.TTS_AUDIO_PATH, "./sdcard/iflyket.pcm");    //声音文件地址
         // 设置发音人
-
-        mTts.setParameter(SpeechConstant.VOICE_NAME, voicer);
+        mTts.setParameter(SpeechConstant.VOICE_NAME, "xiaoyan");
         // 设置语速
         mTts.setParameter(SpeechConstant.SPEED, "50");
         // 设置音调
         mTts.setParameter(SpeechConstant.PITCH, "50");
         // 设置音量
-        mTts.setParameter(SpeechConstant.VOLUME, "50");
+        mTts.setParameter(SpeechConstant.VOLUME, "100");
         // 设置播放器音频流类型
         mTts.setParameter(SpeechConstant.STREAM_TYPE, "3");
+        mTts.startSpeaking(msg, mTtsListener);
     }
 
     /**
@@ -640,20 +586,24 @@ public class MainActivity extends BaseBaseActivity implements RadioGroup.OnCheck
     public SynthesizerListener mTtsListener = new SynthesizerListener() {
         @Override
         public void onSpeakBegin() {
+            Log.i("test", "onSpeakBegin");
+            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC), AudioManager.FLAG_PLAY_SOUND);
         }
 
         @Override
         public void onSpeakPaused() {
+            Log.i("test", "onSpeakPaused");
         }
 
         @Override
         public void onSpeakResumed() {
+            Log.i("test", "onSpeakResumed");
         }
 
         @Override
-        public void onBufferProgress(int percent, int beginPos, int endPos,
-                                     String info) {
+        public void onBufferProgress(int percent, int beginPos, int endPos, String info) {
             mPercentForBuffering = percent;
+            Log.i("test", "onBufferProgress");
         }
 
         @Override
@@ -663,10 +613,22 @@ public class MainActivity extends BaseBaseActivity implements RadioGroup.OnCheck
 
         @Override
         public void onCompleted(SpeechError error) {
+            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, currentVolume, AudioManager.FLAG_PLAY_SOUND);
+            Log.i("test", "onCompleted" + error);
+            if (error == null) {
+                if (!queue.isEmpty()) {
+                    playVoice(queue.poll());
+                } else {
+                    isFirst = true;
+                }
+            } else if (error != null) {
+                Log.i("test", error.getPlainDescription(true));
+            }
         }
 
         @Override
         public void onEvent(int eventType, int arg1, int arg2, Bundle obj) {
+            Log.i("test", "onEvent");
         }
     };
 

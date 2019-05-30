@@ -24,7 +24,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +34,7 @@ import cn.weipan.fb.act.shouye.PayMoneyActivity;
 import cn.weipan.fb.act.shouye.SaoMaActivity;
 import cn.weipan.fb.act.shouye.ZhiHuiMaActivity;
 import cn.weipan.fb.common.FirstEvent;
-import cn.weipan.fb.constact.Constant;
+import cn.weipan.fb.common.Constant;
 import cn.weipan.fb.utils.HttpUtils;
 import cn.weipan.fb.utils.ToastUtils;
 
@@ -81,61 +80,52 @@ public class CashierPlatformFragment extends BaseFragment implements View.OnClic
 
     //初始化界面
     protected void initView(View mChildContentView, Bundle savedInstanceState) {
-
         //注册接受消息的eventbus
         aDefault = EventBus.getDefault();
         aDefault.register(CashierPlatformFragment.this);
-        getBannerUrl();
-        getUserMassage();
-        viewpager = (ViewPager) mChildContentView.findViewById(R.id.viewpager);
+        viewpager = mChildContentView.findViewById(R.id.viewpager);
         viewpager.setAdapter(new MyAdapter());
         viewpager.setCurrentItem(2 * 1000);// 当前页是5000页,也即是0页：因为5000%5=0.
         // 初始化指示器
-        ll_dots = (LinearLayout) mChildContentView.findViewById(R.id.ll_dots);
-        tv_ratio = (TextView) mChildContentView.findViewById(R.id.tv_ratio);
-        tv_desc = (TextView) mChildContentView.findViewById(R.id.tv_desc);
-        tv_total = (TextView) mChildContentView.findViewById(R.id.tv_total);
+        ll_dots = mChildContentView.findViewById(R.id.ll_dots);
+        tv_ratio = mChildContentView.findViewById(R.id.tv_ratio);
+        tv_desc = mChildContentView.findViewById(R.id.tv_desc);
+        tv_total = mChildContentView.findViewById(R.id.tv_total);
         initDesData();// 图片描述数据
         initIndicator();//监听pager的变化
-        TextView headerTitle = (TextView) mChildContentView.findViewById(R.id.head_view_title);
+        TextView headerTitle = mChildContentView.findViewById(R.id.head_view_title);
         headerTitle.setText("收银主页");
-        LinearLayout fanhui = (LinearLayout) mChildContentView.findViewById(R.id.ll_fanhui);
+        LinearLayout fanhui = mChildContentView.findViewById(R.id.ll_fanhui);
         fanhui.setOnClickListener(this);
-        ImageView headerBack = (ImageView) mChildContentView.findViewById(R.id.but_header_back);
+        ImageView headerBack = mChildContentView.findViewById(R.id.but_header_back);
         headerBack.setImageResource(R.drawable.caidan);
-        TextView tvHeaderBack = (TextView) mChildContentView.findViewById(R.id.tv_header_back);
+        TextView tvHeaderBack = mChildContentView.findViewById(R.id.tv_header_back);
         tvHeaderBack.setVisibility(View.INVISIBLE);
         //扫一扫
-        LinearLayout main_reach_scan = (LinearLayout) mChildContentView.findViewById(R.id.main_reach_scan);
+        LinearLayout main_reach_scan = mChildContentView.findViewById(R.id.main_reach_scan);
         main_reach_scan.setOnClickListener(this);
         //收款码
-        LinearLayout main_payment_code = (LinearLayout) mChildContentView.findViewById(R.id.main_payment_code);
+        LinearLayout main_payment_code = mChildContentView.findViewById(R.id.main_payment_code);
         main_payment_code.setOnClickListener(this);
-        //会员消费
-        LinearLayout huiyuanxiaofei = (LinearLayout) mChildContentView.findViewById(R.id.ll_huiyuanxiaofei);
-        huiyuanxiaofei.setOnClickListener(this);
         //卡券收款
-        LinearLayout kaquanshoukuan = (LinearLayout) mChildContentView.findViewById(R.id.ll_kaquanshoukuan);
+        LinearLayout kaquanshoukuan = mChildContentView.findViewById(R.id.ll_kaquanshoukuan);
         kaquanshoukuan.setOnClickListener(this);
         //卡券核销
-        LinearLayout kaquanhexiao = (LinearLayout) mChildContentView.findViewById(R.id.ll_kaquanhexiao);
+        LinearLayout kaquanhexiao = mChildContentView.findViewById(R.id.ll_kaquanhexiao);
         kaquanhexiao.setOnClickListener(this);
-        //会员充值
-        LinearLayout huiyuanchongzhi = (LinearLayout) mChildContentView.findViewById(R.id.ll_huiyuanchongzhi);
-        huiyuanchongzhi.setOnClickListener(this);
-        //积分消费
-        LinearLayout ll_jifenchongzhi = (LinearLayout) mChildContentView.findViewById(R.id.ll_jifenxiaofei);
-        ll_jifenchongzhi.setOnClickListener(this);
         //智慧码
-        LinearLayout ll_zhihuima = (LinearLayout) mChildContentView.findViewById(R.id.ll_zhihuima);
+        LinearLayout ll_zhihuima = mChildContentView.findViewById(R.id.ll_zhihuima);
         ll_zhihuima.setOnClickListener(this);
         //退款
-        LinearLayout ll_tuikuan = (LinearLayout) mChildContentView.findViewById(R.id.ll_tuikuan);
+        LinearLayout ll_tuikuan = mChildContentView.findViewById(R.id.ll_tuikuan);
         ll_tuikuan.setOnClickListener(this);
         //banner广告图
-        bannerImageView = (ImageView) mChildContentView.findViewById(R.id.iv_image_banner);
+        bannerImageView = mChildContentView.findViewById(R.id.iv_image_banner);
         bannerImageView.setOnClickListener(this);
-
+        getTodayCount();
+        handler.sendEmptyMessageDelayed(msgWhat, 4000);
+        getBannerUrl();
+        getUserMassage();
     }
 
     //初始化统计轮播数据
@@ -164,12 +154,7 @@ public class CashierPlatformFragment extends BaseFragment implements View.OnClic
                 intent.putExtra("Activity", "CollectionActivity");
                 startActivity(intent);
                 break;
-            //会员消费
-            case R.id.ll_huiyuanxiaofei:
-                intent = new Intent(appContext, SaoMaActivity.class);
-                intent.putExtra("Activity", "MemberConsumptionActivity");
-                startActivity(intent);
-                break;
+
             //卡券收款
             case R.id.ll_kaquanshoukuan:
 //                ToastUtils.showToast(getActivity(), "开发中，敬请期待！");
@@ -181,19 +166,6 @@ public class CashierPlatformFragment extends BaseFragment implements View.OnClic
             case R.id.ll_kaquanhexiao:
                 intent = new Intent(appContext, SaoMaActivity.class);
                 intent.putExtra("Activity", "KaquanhexiaoActivity");
-                startActivity(intent);
-                break;
-            //会员充值
-            case R.id.ll_huiyuanchongzhi:
-                intent = new Intent(appContext, SaoMaActivity.class);
-
-                intent.putExtra("Activity", "MemberIncomeActivity");
-                startActivity(intent);
-                break;
-            //积分消费
-            case R.id.ll_jifenxiaofei:
-                intent = new Intent(appContext, SaoMaActivity.class);
-                intent.putExtra("Activity", "JiFenActivity");
                 startActivity(intent);
                 break;
             //智慧码
@@ -294,15 +266,6 @@ public class CashierPlatformFragment extends BaseFragment implements View.OnClic
         }
     }
 
-    /**
-     * activity可见可交互的时候就开始发送消息，开启循环
-     */
-    @Override
-    public void onResume() {
-        super.onResume();
-        getTodayCount();
-        handler.sendEmptyMessageDelayed(msgWhat, 4000);
-    }
 
     @Override
     public void onHiddenChanged(boolean hidden) {
@@ -361,6 +324,8 @@ public class CashierPlatformFragment extends BaseFragment implements View.OnClic
                         totalMonthCount = bannerBean.optString("TotalMonthCount");
                         totalMonthMoney = bannerBean.optString("TotalMonthMoney");
                         initDesData();
+                    } else {
+                        ToastUtils.showToast(getActivity(), object.optString("Error"));
                     }
 
                 } catch (JSONException e) {
@@ -397,6 +362,8 @@ public class CashierPlatformFragment extends BaseFragment implements View.OnClic
                         String Imgurl = object.optString("Imgurl");
                         linkurl = object.optString("Linkurl");
                         Picasso.with(getActivity()).load(Constant.URLZHM + Imgurl).into(bannerImageView);
+                    } else {
+                        ToastUtils.showToast(getActivity(), object.optString("Error"));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -434,6 +401,8 @@ public class CashierPlatformFragment extends BaseFragment implements View.OnClic
                         qcodeurl = jsonObject.optString("qcodeurl");
                         bgqcodeurl = jsonObject.optString("bgqcodeurl");
                         qcodeurlshow = jsonObject.optString("qcodeurlshow");
+                    } else {
+                        ToastUtils.showToast(getActivity(), object.optString("Error"));
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

@@ -40,14 +40,15 @@ import cn.weipan.fb.bean.AllMessagBean;
 import cn.weipan.fb.button.SegmentButton;
 import cn.weipan.fb.common.SecondEvent;
 import cn.weipan.fb.common.ThreadEvent;
-import cn.weipan.fb.constact.Constant;
+import cn.weipan.fb.common.Constant;
 import cn.weipan.fb.listener.OnSegmentChangeListener;
 import cn.weipan.fb.utils.HttpUtils;
+import cn.weipan.fb.utils.ToastUtils;
 
 /*
-* 接收消息的fragment
-* Created by cc on 2016/7/27.
-* */
+ * 接收消息的fragment
+ * Created by cc on 2016/7/27.
+ * */
 public class MessageFragment extends BaseFragment implements View.OnClickListener {
     private TextView tvLeft;
     private TextView tvRight;
@@ -247,6 +248,8 @@ public class MessageFragment extends BaseFragment implements View.OnClickListene
                             SystemMessage.add(allMessagBean);
                         }
 
+                    } else {
+                        ToastUtils.showToast(getActivity(), object.optString("Error"));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

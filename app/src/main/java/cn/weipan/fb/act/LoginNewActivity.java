@@ -14,7 +14,6 @@ import android.os.Looper;
 import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.telephony.TelephonyManager;
-import android.text.TextUtils;
 import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.View;
@@ -23,26 +22,26 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.yanzhenjie.permission.AndPermission;
 
-import java.util.Set;
+import com.blankj.utilcode.constant.PermissionConstants;
+import com.blankj.utilcode.util.PermissionUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import cn.jpush.android.api.JPushInterface;
-import cn.jpush.android.api.TagAliasCallback;
 import cn.weipan.fb.R;
 import cn.weipan.fb.common.AppManager;
-import cn.weipan.fb.common.Appstart;
 import cn.weipan.fb.common.UpdateManager;
-import cn.weipan.fb.constact.ACache;
-import cn.weipan.fb.constact.Constant;
+import cn.weipan.fb.common.Constant;
+import cn.weipan.fb.service.TagAliasOperatorHelper;
 import cn.weipan.fb.utils.DialogUtils;
 import cn.weipan.fb.utils.LoadingDialog;
 import cn.weipan.fb.utils.NetworkRequest;
 import cn.weipan.fb.utils.SharedPre;
 import cn.weipan.fb.utils.ToastUtils;
+
+import static cn.weipan.fb.service.TagAliasOperatorHelper.ACTION_SET;
+import static cn.weipan.fb.service.TagAliasOperatorHelper.sequence;
 
 
 /**
@@ -66,7 +65,6 @@ public class LoginNewActivity extends BaseNoLoginActivity implements NetworkRequ
     String imei;
     private SharedPre shared = null;
     private boolean flag;
-    private boolean isLogin;
     private SharedPreferences sp;
     private SharedPreferences.Editor editor;
     private String alias;
@@ -80,27 +78,15 @@ public class LoginNewActivity extends BaseNoLoginActivity implements NetworkRequ
         ButterKnife.bind(this);
         loadingDialog = new LoadingDialog(LoginNewActivity.this, "登录中...");
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            AndPermission.with(LoginNewActivity.this)
-                    .permission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    .send();
-        } else {
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    Looper.prepare();
-                    UpdateManager manager = new UpdateManager(LoginNewActivity.this);
-                    manager.checkUpdate();
-                    Looper.loop();
-                }
-            }).start();
-        }
-
-        String activity = getIntent().getStringExtra("activity");
-        if (TextUtils.equals(activity, "MainActivity")) {
-            alias = "";
-            jHandler.sendMessage(jHandler.obtainMessage(MSG_SET_ALIAS, alias));
-        }
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Looper.prepare();
+                UpdateManager manager = new UpdateManager(LoginNewActivity.this);
+                manager.checkUpdate();
+                Looper.loop();
+            }
+        }).start();
         initView();
     }
 
@@ -112,10 +98,7 @@ public class LoginNewActivity extends BaseNoLoginActivity implements NetworkRequ
         try {
             TelephonyManager tm = (TelephonyManager) this.getSystemService(TELEPHONY_SERVICE);
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED || ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                AndPermission.with(LoginNewActivity.this)
-                        .permission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                        .permission(Manifest.permission.READ_PHONE_STATE)
-                        .send();
+                PermissionUtils.getPermissions(PermissionConstants.PHONE);
                 return;
             }
             imei = tm.getDeviceId();
@@ -185,21 +168,14 @@ public class LoginNewActivity extends BaseNoLoginActivity implements NetworkRequ
             arr = result.replace("{", "").replace("}", "").split("\\|");
             if (arr[0].equals("0")) {
                 flag = true;
-                shared = new SharedPre(this);
-                shared.getUsername();
-                if (!TextUtils.equals(shared.getUsername(), loginnewEditPhone.getText().toString())) {
-
-                    editor.putBoolean("isGesture", false);
-                    editor.commit();
-                    ACache aCache = ACache.get(LoginNewActivity.this);
-                    aCache.put(Constant.GESTURE_PASSWORD, "");
-                }
-
                 alias = arr[3];
                 Log.i("test", alias + "----------alias-------------");
-                jHandler.sendMessage(jHandler.obtainMessage(MSG_SET_ALIAS, alias));
-                isLogin = true;
-
+                TagAliasOperatorHelper.TagAliasBean tagAliasBean = new TagAliasOperatorHelper.TagAliasBean();
+                tagAliasBean.action = ACTION_SET;
+                sequence++;
+                tagAliasBean.alias = alias;
+                tagAliasBean.isAliasAction = true;
+                TagAliasOperatorHelper.getInstance().handleAction(getApplicationContext(), sequence, tagAliasBean);
                 Intent intent = new Intent(LoginNewActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
@@ -247,80 +223,6 @@ public class LoginNewActivity extends BaseNoLoginActivity implements NetworkRequ
         }
     }
 
-    private final TagAliasCallback mAliasCallback = new TagAliasCallback() {
-
-        @Override
-        public void gotResult(int code, String alias, Set<String> tags) {
-            String logs;
-            switch (code) {
-                case 0:
-                    logs = "Set tag and alias success";
-                    Constant.jpushMessage.clear();
-                    Log.i("test", logs);
-                    break;
-
-                case 6002:
-                    logs = "Failed to set alias and tags due to timeout. Try again after 60s.";
-                    Log.i("test", logs);
-                    break;
-
-                default:
-                    logs = "Failed with errorCode = " + code;
-                    Log.e("test", logs);
-            }
-
-        }
-
-    };
-
-    private final TagAliasCallback mTagsCallback = new TagAliasCallback() {
-
-        @Override
-        public void gotResult(int code, String alias, Set<String> tags) {
-            String logs;
-            switch (code) {
-                case 0:
-                    logs = "Set tag and alias success";
-                    Log.i("test", logs);
-                    Constant.jpushMessage.clear();
-                    break;
-
-                case 6002:
-                    logs = "Failed to set alias and tags due to timeout. Try again after 60s.";
-                    Log.i("test", logs);
-                    break;
-
-                default:
-                    logs = "Failed with errorCode = " + code;
-                    Log.e("test", logs);
-            }
-        }
-
-    };
-
-    private static final int MSG_SET_ALIAS = 1001;
-    private static final int MSG_SET_TAGS = 1002;
-
-
-    private final Handler jHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            switch (msg.what) {
-                case MSG_SET_ALIAS:
-                    Log.d("test", "Set alias in handler.");
-                    JPushInterface.setAliasAndTags(getApplicationContext(), alias, null, mAliasCallback);
-                    break;
-
-                case MSG_SET_TAGS:
-                    Log.d("test", "Set tags in handler.");
-                    JPushInterface.setAliasAndTags(getApplicationContext(), null, (Set<String>) msg.obj, mTagsCallback);
-                    break;
-                default:
-                    Log.i("test", "Unhandled msg - " + msg.what);
-            }
-        }
-    };
 
     Handler mHandler = new Handler() {
         public void handleMessage(Message msg) {
@@ -351,27 +253,33 @@ public class LoginNewActivity extends BaseNoLoginActivity implements NetworkRequ
                 loginnewEditPhone.setText("");
                 break;
             case R.id.login_nologin:
+                PermissionUtils.permission(PermissionConstants.PHONE).callback(new PermissionUtils.SimpleCallback() {
+                    @Override
+                    public void onGranted() {
+                        DialogUtils.customDialog(LoginNewActivity.this, "", "呼叫", "取消",
+                                "客服电话：400-8321-606", new DialogUtils.DialogCallback() {
+                                    @Override
+                                    public void PositiveButton(int i) {
+                                        switch (i) {
+                                            case -1:
+                                                Intent intent = new Intent("android.intent.action.CALL", Uri.parse("tel:" + "400-8321-606"));
+                                                startActivity(intent);
+                                                break;
+                                            case -2:
+                                                break;
 
-                AndPermission.with(LoginNewActivity.this)
-                        .permission(Manifest.permission.CALL_PHONE)
-                        .send();
-                DialogUtils.customDialog(LoginNewActivity.this, "", "呼叫", "取消",
-                        "客服电话：400-8321-606", new DialogUtils.DialogCallback() {
-                            @Override
-                            public void PositiveButton(int i) {
-                                switch (i) {
-                                    case -1:
-                                        Intent intent = new Intent("android.intent.action.CALL", Uri.parse("tel:" + "400-8321-606"));
-                                        startActivity(intent);
-                                        break;
-                                    case -2:
-                                        break;
+                                            default:
+                                                break;
+                                        }
+                                    }
+                                }, false, true);
+                    }
 
-                                    default:
-                                        break;
-                                }
-                            }
-                        }, false, true);
+                    @Override
+                    public void onDenied() {
+
+                    }
+                }).request();
                 break;
             default:
                 break;

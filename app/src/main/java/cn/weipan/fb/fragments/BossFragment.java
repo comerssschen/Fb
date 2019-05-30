@@ -27,8 +27,9 @@ import java.io.IOException;
 import cn.weipan.fb.R;
 import cn.weipan.fb.act.BoseWebActivity;
 import cn.weipan.fb.act.MainActivity;
-import cn.weipan.fb.constact.Constant;
+import cn.weipan.fb.common.Constant;
 import cn.weipan.fb.utils.HttpUtils;
+import cn.weipan.fb.utils.ToastUtils;
 
 /**
  * 老板赚钱
@@ -108,70 +109,57 @@ public class BossFragment extends BaseFragment implements View.OnClickListener {
         mContext = context;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (TextUtils.equals(cashType, "6")) {
-            getUserMassage();
-        }
-    }
-
     //初始化
     @Override
     protected void initView(View mChildContentView, Bundle savedInstanceState) {
-        TextView headerTitle = (TextView) mChildContentView.findViewById(R.id.head_view_title);
+        TextView headerTitle = mChildContentView.findViewById(R.id.head_view_title);
         headerTitle.setText("老板赚钱");
-        LinearLayout fanhui = (LinearLayout) mChildContentView.findViewById(R.id.ll_fanhui);
+        LinearLayout fanhui = mChildContentView.findViewById(R.id.ll_fanhui);
         fanhui.setOnClickListener(this);
-        ImageView headerBack = (ImageView) mChildContentView.findViewById(R.id.but_header_back);
+        ImageView headerBack = mChildContentView.findViewById(R.id.but_header_back);
         headerBack.setImageResource(R.drawable.caidan);
-        TextView tvHeaderBack = (TextView) mChildContentView.findViewById(R.id.tv_header_back);
+        TextView tvHeaderBack = mChildContentView.findViewById(R.id.tv_header_back);
         tvHeaderBack.setVisibility(View.INVISIBLE);
         if (TextUtils.equals(cashType, "6")) {
-            getUserMassage();
-            shiShiFenXi = (LinearLayout) mChildContentView.findViewById(R.id.ll_shishifenxi);
+
+            shiShiFenXi = mChildContentView.findViewById(R.id.ll_shishifenxi);
             shiShiFenXi.setOnClickListener(this);
-            shiJianFenXi = (LinearLayout) mChildContentView.findViewById(R.id.ll_shijianfenxi);
+            shiJianFenXi = mChildContentView.findViewById(R.id.ll_shijianfenxi);
             shiJianFenXi.setOnClickListener(this);
-            ciShuFenXi = (LinearLayout) mChildContentView.findViewById(R.id.ll_cishufenxi);
+            ciShuFenXi = mChildContentView.findViewById(R.id.ll_cishufenxi);
             ciShuFenXi.setOnClickListener(this);
-            jingeFenXi = (LinearLayout) mChildContentView.findViewById(R.id.ll_jinefenxi);
+            jingeFenXi = mChildContentView.findViewById(R.id.ll_jinefenxi);
             jingeFenXi.setOnClickListener(this);
-            zhouQiFenXi = (LinearLayout) mChildContentView.findViewById(R.id.ll_zhouqifenxi);
+            zhouQiFenXi = mChildContentView.findViewById(R.id.ll_zhouqifenxi);
             zhouQiFenXi.setOnClickListener(this);
-            fuGouLvFenXi = (LinearLayout) mChildContentView.findViewById(R.id.ll_fugoulvfenxi);
+            fuGouLvFenXi = mChildContentView.findViewById(R.id.ll_fugoulvfenxi);
             fuGouLvFenXi.setOnClickListener(this);
-            weiShangCheng = (RelativeLayout) mChildContentView.findViewById(R.id.rl_weishangcheng);
+            weiShangCheng = mChildContentView.findViewById(R.id.rl_weishangcheng);
             weiShangCheng.setOnClickListener(this);
-            huoDongGuanLi = (RelativeLayout) mChildContentView.findViewById(R.id.rl_huodongguanli);
+            huoDongGuanLi = mChildContentView.findViewById(R.id.rl_huodongguanli);
             huoDongGuanLi.setOnClickListener(this);
-            rl_faquan = (RelativeLayout) mChildContentView.findViewById(R.id.rl_faquan);
+            rl_faquan = mChildContentView.findViewById(R.id.rl_faquan);
             rl_faquan.setOnClickListener(this);
 
-            tv_shishifenxi = (TextView) mChildContentView.findViewById(R.id.tv_shishifenxi);
-            tv_shijianfenxi = (TextView) mChildContentView.findViewById(R.id.tv_shijianfenxi);
-            tv_cishufenxi = (TextView) mChildContentView.findViewById(R.id.tv_cishufenxi);
-            tv_jinefenxi = (TextView) mChildContentView.findViewById(R.id.tv_jinefenxi);
-            tv_zhouqifenxi = (TextView) mChildContentView.findViewById(R.id.tv_zhouqifenxi);
-            tv_fugoulvfenxi = (TextView) mChildContentView.findViewById(R.id.tv_fugoulvfenxi);
-            tv_weishangcheng = (TextView) mChildContentView.findViewById(R.id.tv_weishangcheng);
-            tv_huodongguanli = (TextView) mChildContentView.findViewById(R.id.tv_huodongguanli);
-            tv_faquan = (TextView) mChildContentView.findViewById(R.id.tv_faquan);
+            tv_shishifenxi = mChildContentView.findViewById(R.id.tv_shishifenxi);
+            tv_shijianfenxi = mChildContentView.findViewById(R.id.tv_shijianfenxi);
+            tv_cishufenxi = mChildContentView.findViewById(R.id.tv_cishufenxi);
+            tv_jinefenxi = mChildContentView.findViewById(R.id.tv_jinefenxi);
+            tv_zhouqifenxi = mChildContentView.findViewById(R.id.tv_zhouqifenxi);
+            tv_fugoulvfenxi = mChildContentView.findViewById(R.id.tv_fugoulvfenxi);
+            tv_weishangcheng = mChildContentView.findViewById(R.id.tv_weishangcheng);
+            tv_huodongguanli = mChildContentView.findViewById(R.id.tv_huodongguanli);
+            tv_faquan = mChildContentView.findViewById(R.id.tv_faquan);
 
-            iv_shishifenxi = (ImageView) mChildContentView.findViewById(R.id.iv_shishifenxi);
-            iv_shijianfenxi = (ImageView) mChildContentView.findViewById(R.id.iv_shijianfenxi);
-            iv_cishufenxi = (ImageView) mChildContentView.findViewById(R.id.iv_cishufenxi);
-            iv_jinefenxi = (ImageView) mChildContentView.findViewById(R.id.iv_jinefenxi);
-            iv_zhouqifenxi = (ImageView) mChildContentView.findViewById(R.id.iv_zhouqifenxi);
-            iv_fugoulvfenxi = (ImageView) mChildContentView.findViewById(R.id.iv_fugoulvfenxi);
-            iv_cotentssss = (ImageView) mChildContentView.findViewById(R.id.iv_cotentssss);
-            iv_cotentsss = (ImageView) mChildContentView.findViewById(R.id.iv_cotentsss);
-        } else {
+            iv_shishifenxi = mChildContentView.findViewById(R.id.iv_shishifenxi);
+            iv_shijianfenxi = mChildContentView.findViewById(R.id.iv_shijianfenxi);
+            iv_cishufenxi = mChildContentView.findViewById(R.id.iv_cishufenxi);
+            iv_jinefenxi = mChildContentView.findViewById(R.id.iv_jinefenxi);
+            iv_zhouqifenxi = mChildContentView.findViewById(R.id.iv_zhouqifenxi);
+            iv_fugoulvfenxi = mChildContentView.findViewById(R.id.iv_fugoulvfenxi);
+            iv_cotentssss = mChildContentView.findViewById(R.id.iv_cotentssss);
+            iv_cotentsss = mChildContentView.findViewById(R.id.iv_cotentsss);
+            getUserMassage();
         }
     }
 
@@ -406,6 +394,8 @@ public class BossFragment extends BaseFragment implements View.OnClickListener {
                                 if (!TextUtils.isEmpty(url31)) {
                                     rl_faquan.setVisibility(View.VISIBLE);
                                 }
+                            } else {
+                                ToastUtils.showToast(getActivity(), object.optString("Error"));
                             }
 
                         } catch (JSONException e) {

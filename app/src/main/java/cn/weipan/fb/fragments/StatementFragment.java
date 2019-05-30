@@ -35,13 +35,14 @@ import cn.weipan.fb.act.MainActivity;
 import cn.weipan.fb.act.zhangdan.BaseZhangDanWebActivity;
 import cn.weipan.fb.act.zhangdan.ShouKuanQuShiWebActivity;
 import cn.weipan.fb.common.FirstEvent;
-import cn.weipan.fb.constact.Constant;
+import cn.weipan.fb.common.Constant;
 import cn.weipan.fb.utils.HttpUtils;
+import cn.weipan.fb.utils.ToastUtils;
 
 /*
-* 账单fragment
-* Created by cc on 2016/7/27.
-* */
+ * 账单fragment
+ * Created by cc on 2016/7/27.
+ * */
 public class StatementFragment extends BaseFragment implements View.OnClickListener {
     public ViewPager viewpager;
     int msgWhat = 0;
@@ -62,14 +63,6 @@ public class StatementFragment extends BaseFragment implements View.OnClickListe
     private TextView tv_dot;
     private Intent intent;
     private List<ImageView> imageList = new ArrayList<ImageView>();
-    private String totalMonthCount;
-    private String totalMonthMoney;
-    private String lastmonthCount;
-    private String lastmonthMoney;
-    private String totalYestMoney;
-    private String totalDayCount;
-    private String totalDayMoney;
-    private String totalYestCount;
     private String result;
     private RelativeLayout rlShouKuan;
     private RelativeLayout rlHeXiao;
@@ -86,42 +79,19 @@ public class StatementFragment extends BaseFragment implements View.OnClickListe
     private String url1;
     private String url2;
     private String url3;
-    private String url21;
     private String title1;
     private String title2;
     private String title3;
     private String imgsrc1;
     private String imgsrc2;
     private String imgsrc3;
-    private String title21;
-    private String imgsrc21;
     private EventBus aDefault;
     private String urlnext11;
-    private String urlnext12;
     private String urlnext13;
-    private String urlnext21;
-    private String type11;
-    private String type12;
-    private String type13;
-    private String type21;
-    private String urlnext22;
-    private String type22;
-    private String url22;
-    private String title22;
-    private String imgsrc22;
-    private RelativeLayout rlHuiYuanZhangDan;
-    private RelativeLayout rlJiFenZhangDan;
-    private TextView tv_huiyuanzhangdan;
-    private TextView tv_jifenzhangdan;
-    private ImageView iv_huiyuanzhangdan;
-    private ImageView iv_jifenzhangdan;
     private String url31;
     private String title31;
     private String imgsrc31;
     private String urlnext31;
-    private String type31;
-    private String style21;
-    private String style22;
 
 
     @Override
@@ -141,65 +111,41 @@ public class StatementFragment extends BaseFragment implements View.OnClickListe
         //注册接受消息的eventbus
         aDefault = EventBus.getDefault();
         aDefault.register(StatementFragment.this);
-
-
-        viewpager = (ViewPager) mChildContentView.findViewById(R.id.viewpager);
+        viewpager = mChildContentView.findViewById(R.id.viewpager);
         viewpager.setAdapter(new MyAdapter());
         viewpager.setCurrentItem(4 * 1000);// 当前页是5000页,也即是0页：因为5000%5=0.
         // 初始化指示器
-        ll_dots = (LinearLayout) mChildContentView.findViewById(R.id.ll_dots);
-        tv_ratio = (TextView) mChildContentView.findViewById(R.id.tv_ratio);
-        tv_desc = (TextView) mChildContentView.findViewById(R.id.tv_desc);
-        tv_total = (TextView) mChildContentView.findViewById(R.id.tv_total);
-
-        initDesData();// 图片描述数据
-        initIndicator();//监听pager的变化
-
-        TextView headerTitle = (TextView) mChildContentView.findViewById(R.id.head_view_title);
+        ll_dots = mChildContentView.findViewById(R.id.ll_dots);
+        tv_ratio = mChildContentView.findViewById(R.id.tv_ratio);
+        tv_desc = mChildContentView.findViewById(R.id.tv_desc);
+        tv_total = mChildContentView.findViewById(R.id.tv_total);
+        TextView headerTitle = mChildContentView.findViewById(R.id.head_view_title);
         headerTitle.setText("账单统计");
-        LinearLayout fanhui = (LinearLayout) mChildContentView.findViewById(R.id.ll_fanhui);
+        LinearLayout fanhui = mChildContentView.findViewById(R.id.ll_fanhui);
         fanhui.setOnClickListener(this);
-        ImageView headerBack = (ImageView) mChildContentView.findViewById(R.id.but_header_back);
+        ImageView headerBack = mChildContentView.findViewById(R.id.but_header_back);
         headerBack.setImageResource(R.drawable.caidan);
-        TextView tvHeaderBack = (TextView) mChildContentView.findViewById(R.id.tv_header_back);
+        TextView tvHeaderBack = mChildContentView.findViewById(R.id.tv_header_back);
         tvHeaderBack.setVisibility(View.INVISIBLE);
-        rlShouKuan = (RelativeLayout) mChildContentView.findViewById(R.id.rl_shoukuanzhangdan);
+        rlShouKuan = mChildContentView.findViewById(R.id.rl_shoukuanzhangdan);
         rlShouKuan.setOnClickListener(this);
-        rlHeXiao = (RelativeLayout) mChildContentView.findViewById(R.id.rl_hexiaozhangdan);
+        rlHeXiao = mChildContentView.findViewById(R.id.rl_hexiaozhangdan);
         rlHeXiao.setOnClickListener(this);
-        rlTuiKuan = (RelativeLayout) mChildContentView.findViewById(R.id.rl_tuikuanzhangdan);
+        rlTuiKuan = mChildContentView.findViewById(R.id.rl_tuikuanzhangdan);
         rlTuiKuan.setOnClickListener(this);
-        rlShouKuanQuShi = (RelativeLayout) mChildContentView.findViewById(R.id.rl_shoukuanqushi);
+        rlShouKuanQuShi = mChildContentView.findViewById(R.id.rl_shoukuanqushi);
         rlShouKuanQuShi.setOnClickListener(this);
-        rlHuiYuanZhangDan = (RelativeLayout) mChildContentView.findViewById(R.id.rl_huiyuanzhangdan);
-        rlHuiYuanZhangDan.setOnClickListener(this);
-
-        rlJiFenZhangDan = (RelativeLayout) mChildContentView.findViewById(R.id.rl_jifenzhangdan);
-        rlJiFenZhangDan.setOnClickListener(this);
-
-        tv_shoukuanzhangdan = (TextView) mChildContentView.findViewById(R.id.tv_shoukuanzhangdan);
-        tv_hexiaozhangdan = (TextView) mChildContentView.findViewById(R.id.tv_hexiaozhangdan);
-        tv_tuikuanzhangdan = (TextView) mChildContentView.findViewById(R.id.tv_tuikuanzhangdan);
-        tv_shoukuanqushi = (TextView) mChildContentView.findViewById(R.id.tv_shoukuanqushi);
-        tv_huiyuanzhangdan = (TextView) mChildContentView.findViewById(R.id.tv_huiyuanzhangdan);
-        tv_jifenzhangdan = (TextView) mChildContentView.findViewById(R.id.tv_jifenzhangdan);
-
-        iv_shoukuanzhangdan = (ImageView) mChildContentView.findViewById(R.id.iv_shoukuanzhangdan);
-        iv_hexiaozhangdan = (ImageView) mChildContentView.findViewById(R.id.iv_hexiaozhangdan);
-        iv_tuikuanzhangdan = (ImageView) mChildContentView.findViewById(R.id.iv_tuikuanzhangdan);
-        iv_shoukuanqushi = (ImageView) mChildContentView.findViewById(R.id.iv_shoukuanqushi);
-        iv_huiyuanzhangdan = (ImageView) mChildContentView.findViewById(R.id.iv_huiyuanzhangdan);
-        iv_jifenzhangdan = (ImageView) mChildContentView.findViewById(R.id.iv_jifenzhangdan);
-    }
-
-    /**
-     * activity可见可交互的时候就开始发送消息，开启循环
-     */
-    @Override
-    public void onResume() {
-        super.onResume();
-        getTodayCount();
+        tv_shoukuanzhangdan = mChildContentView.findViewById(R.id.tv_shoukuanzhangdan);
+        tv_hexiaozhangdan = mChildContentView.findViewById(R.id.tv_hexiaozhangdan);
+        tv_tuikuanzhangdan = mChildContentView.findViewById(R.id.tv_tuikuanzhangdan);
+        tv_shoukuanqushi = mChildContentView.findViewById(R.id.tv_shoukuanqushi);
+        iv_shoukuanzhangdan = mChildContentView.findViewById(R.id.iv_shoukuanzhangdan);
+        iv_hexiaozhangdan = mChildContentView.findViewById(R.id.iv_hexiaozhangdan);
+        iv_tuikuanzhangdan = mChildContentView.findViewById(R.id.iv_tuikuanzhangdan);
+        iv_shoukuanqushi = mChildContentView.findViewById(R.id.iv_shoukuanqushi);
+        initIndicator();//监听pager的变化
         getContent();
+        getTodayCount();
         handler.sendEmptyMessageDelayed(msgWhat, 5000);
     }
 
@@ -237,15 +183,19 @@ public class StatementFragment extends BaseFragment implements View.OnClickListe
                     if (TextUtils.equals(result, "0")) {
                         success = object.optString("allTotal");
                         JSONObject bannerBean = new JSONObject(success);
-                        totalDayCount = bannerBean.optString("TotalDayCount");
-                        totalDayMoney = bannerBean.optString("TotalDayMoney");
-                        totalYestCount = bannerBean.optString("TotalYestCount");
-                        totalYestMoney = bannerBean.optString("TotalYestMoney");
-                        totalMonthCount = bannerBean.optString("TotalMonthCount");
-                        totalMonthMoney = bannerBean.optString("TotalMonthMoney");
-                        lastmonthCount = bannerBean.optString("LastmonthCount");
-                        lastmonthMoney = bannerBean.optString("LastmonthMoney");
-                        initDesData();
+                        String totalDayCount = bannerBean.optString("TotalDayCount");
+                        String totalDayMoney = bannerBean.optString("TotalDayMoney");
+                        String totalYestCount = bannerBean.optString("TotalYestCount");
+                        String totalYestMoney = bannerBean.optString("TotalYestMoney");
+                        String totalMonthCount = bannerBean.optString("TotalMonthCount");
+                        String totalMonthMoney = bannerBean.optString("TotalMonthMoney");
+                        String lastmonthCount = bannerBean.optString("LastmonthCount");
+                        String lastmonthMoney = bannerBean.optString("LastmonthMoney");
+                        des_arrays = new String[]{"今日收款", "昨日收款", "本月收款", "上月收款"};
+                        des_arrayss = new String[]{totalDayMoney, totalYestMoney, totalMonthMoney, lastmonthMoney};
+                        des_arraysss = new String[]{"（合计" + totalDayCount + "笔）", "（合计" + totalYestCount + "笔）", "（合计" + totalMonthCount + "笔）", "（合计" + lastmonthCount + "笔）"};
+                    } else {
+                        ToastUtils.showToast(getActivity(), object.optString("Error"));
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -254,42 +204,10 @@ public class StatementFragment extends BaseFragment implements View.OnClickListe
         });
     }
 
-
     //接收左边系统jpush消息
     @Subscribe
     public void onMsgEvent(FirstEvent events) {
-        String text = events.getMsg();
-        String[] temp = null;
-        temp = text.split("\\|");
-        Log.i("test", "statmentferagments = text = " + text);
-        Log.i("test", "statmentferagments = temp = " + temp);
-        if (temp.length > 3) {
-            int dayCount = Integer.parseInt(totalDayCount);
-            dayCount++;
-            totalDayCount = String.valueOf(dayCount);
-            int monthCount = Integer.parseInt(totalMonthCount);
-            monthCount++;
-            totalMonthCount = String.valueOf(monthCount);
-
-            BigDecimal b1 = new BigDecimal(totalDayMoney);
-            BigDecimal b2 = new BigDecimal(temp[1]);
-            BigDecimal b = b1.add(b2);
-            totalDayMoney = String.valueOf(b);
-
-            BigDecimal c1 = new BigDecimal(totalMonthMoney);
-            BigDecimal c2 = new BigDecimal(temp[1]);
-            BigDecimal c = c1.add(c2);
-            totalMonthMoney = String.valueOf(c);
-
-            Log.i("test", "totalMonthMoney = sta =" + totalMonthMoney);
-            initDesData();
-        }
-    }
-
-    private void initDesData() {
-        des_arrays = new String[]{"今日收款", "昨日收款", "本月收款", "上月收款"};
-        des_arrayss = new String[]{totalDayMoney, totalYestMoney, totalMonthMoney, lastmonthMoney};
-        des_arraysss = new String[]{"（合计" + totalDayCount + "笔）", "（合计" + totalYestCount + "笔）", "（合计" + totalMonthCount + "笔）", "（合计" + lastmonthCount + "笔）"};
+        getTodayCount();
     }
 
     //点击事件
@@ -330,30 +248,6 @@ public class StatementFragment extends BaseFragment implements View.OnClickListe
                     startActivity(intent);
                 }
                 break;
-            //会员
-            case R.id.rl_huiyuanzhangdan:
-
-                if (!TextUtils.isEmpty(url21)) {
-                    intent = new Intent(mContext, BaseZhangDanWebActivity.class);
-                    intent.putExtra("url", url21);
-                    intent.putExtra("title", title21);
-                    intent.putExtra("urlnext", urlnext21);
-                    intent.putExtra("style", style21);
-                    startActivity(intent);
-                }
-                break;
-            //积分账单
-            case R.id.rl_jifenzhangdan:
-                if (!TextUtils.isEmpty(url22)) {
-                    intent = new Intent(mContext, BaseZhangDanWebActivity.class);
-
-                    intent.putExtra("url", url22);
-                    intent.putExtra("title", title22);
-                    intent.putExtra("urlnext", urlnext22);
-                    intent.putExtra("style", style22);
-                    startActivity(intent);
-                }
-                break;
             //收款趋势
             case R.id.rl_shoukuanqushi:
                 if (!TextUtils.isEmpty(url31)) {
@@ -371,7 +265,6 @@ public class StatementFragment extends BaseFragment implements View.OnClickListe
 
     //获取界面显示内容的接口
     private void getContent() {
-
         String randomString = ((MainActivity) getActivity()).getRandomString(8);
         String content = ((MainActivity) getActivity()).getContent(randomString);
         String miyaoKey = ((MainActivity) getActivity()).getMiyaoKey(randomString);
@@ -382,7 +275,6 @@ public class StatementFragment extends BaseFragment implements View.OnClickListe
         HttpUtils.getAsyn(getActivity(), request, new HttpUtils.CallBack() {
 
             private JSONArray jsonArray3;
-            private JSONArray jsonArray2;
             private JSONArray jsonArray1;
             private String result;
 
@@ -404,9 +296,6 @@ public class StatementFragment extends BaseFragment implements View.OnClickListe
                         if (data.length() > 0) {
                             jsonArray1 = data.optJSONArray(0);
                         }
-                        if (data.length() > 1) {
-                            jsonArray2 = data.optJSONArray(1);
-                        }
                         if (data.length() > 2) {
                             jsonArray3 = data.optJSONArray(2);
                         }
@@ -417,7 +306,6 @@ public class StatementFragment extends BaseFragment implements View.OnClickListe
                                 title1 = jsonArray1.optJSONObject(0).optString("title");
                                 imgsrc1 = jsonArray1.optJSONObject(0).optString("imgsrc");
                                 urlnext11 = jsonArray1.optJSONObject(0).optString("urlnext");
-                                type11 = jsonArray1.optJSONObject(0).optString("Type");
                                 tv_shoukuanzhangdan.setText(title1);
                                 Picasso.with(mContext).load(Constant.URL + "/" + imgsrc1).into(iv_shoukuanzhangdan);
                                 rlShouKuan.setVisibility(View.VISIBLE);
@@ -426,8 +314,6 @@ public class StatementFragment extends BaseFragment implements View.OnClickListe
                                 url2 = jsonArray1.optJSONObject(1).optString("url");
                                 title2 = jsonArray1.optJSONObject(1).optString("title");
                                 imgsrc2 = jsonArray1.optJSONObject(1).optString("imgsrc");
-                                urlnext12 = jsonArray1.optJSONObject(1).optString("urlnext");
-                                type12 = jsonArray1.optJSONObject(0).optString("Type");
                                 tv_tuikuanzhangdan.setText(title2);
                                 Picasso.with(mContext).load(Constant.URL + "/" + imgsrc2).into(iv_tuikuanzhangdan);
                                 rlTuiKuan.setVisibility(View.VISIBLE);
@@ -437,34 +323,9 @@ public class StatementFragment extends BaseFragment implements View.OnClickListe
                                 title3 = jsonArray1.optJSONObject(2).optString("title");
                                 imgsrc3 = jsonArray1.optJSONObject(2).optString("imgsrc");
                                 urlnext13 = jsonArray1.optJSONObject(2).optString("urlnext");
-                                type13 = jsonArray1.optJSONObject(0).optString("Type");
                                 tv_hexiaozhangdan.setText(title3);
                                 Picasso.with(mContext).load(Constant.URL + "/" + imgsrc3).into(iv_hexiaozhangdan);
                                 rlHeXiao.setVisibility(View.VISIBLE);
-                            }
-                        }
-                        if (!(jsonArray2 == null)) {
-                            if (jsonArray2.length() > 0) {
-                                url21 = jsonArray2.optJSONObject(0).optString("url");
-                                title21 = jsonArray2.optJSONObject(0).optString("title");
-                                imgsrc21 = jsonArray2.optJSONObject(0).optString("imgsrc");
-                                urlnext21 = jsonArray2.optJSONObject(0).optString("urlnext");
-                                type21 = jsonArray2.optJSONObject(0).optString("Type");
-                                style21 = jsonArray2.optJSONObject(0).optString("Style");
-                                tv_huiyuanzhangdan.setText(title21);
-                                Picasso.with(mContext).load(Constant.URL + "/" + imgsrc21).into(iv_huiyuanzhangdan);
-                                rlHuiYuanZhangDan.setVisibility(View.VISIBLE);
-                            }
-                            if (jsonArray2.length() > 1) {
-                                url22 = jsonArray2.optJSONObject(1).optString("url");
-                                title22 = jsonArray2.optJSONObject(1).optString("title");
-                                imgsrc22 = jsonArray2.optJSONObject(1).optString("imgsrc");
-                                urlnext22 = jsonArray2.optJSONObject(1).optString("urlnext");
-                                type22 = jsonArray2.optJSONObject(1).optString("Type");
-                                style22 = jsonArray2.optJSONObject(1).optString("Style");
-                                tv_jifenzhangdan.setText(title22);
-                                Picasso.with(mContext).load(Constant.URL + "/" + imgsrc22).into(iv_jifenzhangdan);
-                                rlJiFenZhangDan.setVisibility(View.VISIBLE);
                             }
                         }
 
@@ -474,12 +335,13 @@ public class StatementFragment extends BaseFragment implements View.OnClickListe
                                 title31 = jsonArray3.optJSONObject(0).optString("title");
                                 imgsrc31 = jsonArray3.optJSONObject(0).optString("imgsrc");
                                 urlnext31 = jsonArray3.optJSONObject(0).optString("urlnext");
-                                type31 = jsonArray3.optJSONObject(0).optString("Type");
                                 tv_shoukuanqushi.setText(title31);
                                 Picasso.with(mContext).load(Constant.URL + "/" + imgsrc31).into(iv_shoukuanqushi);
                                 rlShouKuanQuShi.setVisibility(View.VISIBLE);
                             }
                         }
+                    } else {
+                        ToastUtils.showToast(getActivity(), object.optString("Error"));
                     }
 
                 } catch (JSONException e) {
@@ -539,17 +401,12 @@ public class StatementFragment extends BaseFragment implements View.OnClickListe
         imageList.clear();
         ImageView iva = new ImageView(appContext);
         iva.setBackgroundResource(R.drawable.zdtjbj);
-
         ImageView ivb = new ImageView(appContext);
         ivb.setBackgroundResource(R.drawable.zdtjbj);
-
         ImageView ivc = new ImageView(appContext);
         ivc.setBackgroundResource(R.drawable.zdtjbj);
-
         ImageView ivd = new ImageView(appContext);
         ivd.setBackgroundResource(R.drawable.zdtjbj);
-
-
         imageList.add(iva);
         imageList.add(ivb);
         imageList.add(ivc);
@@ -579,7 +436,6 @@ public class StatementFragment extends BaseFragment implements View.OnClickListe
             container.removeView((View) object);
         }
     }
-
 
     /**
      * 当MainActivity不可见的时候让handler停止发送消息 防止内存泄露

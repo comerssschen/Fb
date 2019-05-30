@@ -11,15 +11,14 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@color/header"
-        android:orientation="horizontal"
-        >
+        android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_marginTop="@dimen/text_size_22"
-            android:layout_marginBottom="@dimen/text_size_22"
             android:id="@+id/main_reach_scan"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/text_size_22"
+            android:layout_marginBottom="@dimen/text_size_22"
             android:layout_weight="1"
             android:orientation="vertical">
 
@@ -40,11 +39,11 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_marginTop="@dimen/text_size_22"
-            android:layout_marginBottom="@dimen/text_size_22"
             android:id="@+id/main_payment_code"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/text_size_22"
+            android:layout_marginBottom="@dimen/text_size_22"
             android:layout_weight="1"
             android:orientation="vertical">
 
@@ -65,11 +64,11 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_marginTop="@dimen/text_size_22"
-            android:layout_marginBottom="@dimen/text_size_22"
-            android:id="@+id/ll_huiyuanxiaofei"
+            android:id="@+id/ll_zhihuima"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/text_size_22"
+            android:layout_marginBottom="@dimen/text_size_22"
             android:layout_weight="1"
             android:orientation="vertical">
 
@@ -77,14 +76,14 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@drawable/huiyuanxiaofei" />
+                android:src="@drawable/zhihuima" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="@dimen/text_size_10"
-                android:text="会员消费"
+                android:text="智慧码"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_16" />
         </LinearLayout>
@@ -109,8 +108,7 @@
                     android:id="@+id/ll_kaquanshoukuan"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/text_size_16"
-                    android:layout_marginTop="@dimen/text_size_16"
+                    android:layout_marginVertical="18dp"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
@@ -139,8 +137,7 @@
                     android:id="@+id/ll_kaquanhexiao"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/text_size_16"
-                    android:layout_marginTop="@dimen/text_size_16"
+                    android:layout_marginVertical="18dp"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
@@ -166,109 +163,10 @@
                     android:background="@color/light_gray" />
 
                 <LinearLayout
-                    android:id="@+id/ll_huiyuanchongzhi"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/text_size_16"
-                    android:layout_marginTop="@dimen/text_size_16"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:src="@drawable/huiyuanchongzhi" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/text_size_5"
-                        android:text="会员充值"
-                        android:textColor="@color/gray_black"
-                        android:textSize="@dimen/text_size_14" />
-                </LinearLayout>
-
-            </LinearLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/light_gray" />
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:id="@+id/ll_jifenxiaofei"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/text_size_16"
-                    android:layout_marginTop="@dimen/text_size_16"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:src="@drawable/jifenxiaofei" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/text_size_5"
-                        android:text="积分消费"
-                        android:textColor="@color/gray_black"
-                        android:textSize="@dimen/text_size_14" />
-                </LinearLayout>
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/light_gray" />
-
-                <LinearLayout
-                    android:id="@+id/ll_zhihuima"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/text_size_16"
-                    android:layout_marginTop="@dimen/text_size_16"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:src="@drawable/zhihuima" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginTop="@dimen/text_size_5"
-                        android:text="智慧码"
-                        android:textColor="@color/gray_black"
-                        android:textSize="@dimen/text_size_14" />
-                </LinearLayout>
-
-                <View
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:background="@color/light_gray" />
-
-                <LinearLayout
                     android:id="@+id/ll_tuikuan"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/text_size_16"
-                    android:layout_marginTop="@dimen/text_size_16"
+                    android:layout_marginVertical="18dp"
                     android:layout_weight="1"
                     android:orientation="vertical">
 
@@ -287,7 +185,13 @@
                         android:textColor="@color/gray_black"
                         android:textSize="@dimen/text_size_14" />
                 </LinearLayout>
+
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/light_gray" />
 
             <RelativeLayout
                 android:id="@+id/relativelayout"
@@ -305,10 +209,10 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:padding="@dimen/dp_10"
+                    android:layout_alignParentStart="true"
                     android:layout_alignParentTop="true"
-                    android:layout_alignParentStart="true">
+                    android:orientation="vertical"
+                    android:padding="@dimen/dp_10">
                     <!-- 图片描述文字 -->
                     <TextView
                         android:id="@+id/tv_desc"
@@ -329,34 +233,33 @@
                         android:textSize="@dimen/dp_22" />
 
                     <TextView
-                        android:layout_marginTop="@dimen/dp_4"
                         android:id="@+id/tv_total"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/dp_4"
                         android:text="( 合计笔 )"
                         android:textColor="#969696"
                         android:textSize="@dimen/text_size_14" />
 
                     <!-- 存放圆点 -->
                     <LinearLayout
-                        android:layout_marginTop="@dimen/dp_14"
                         android:id="@+id/ll_dots"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/dp_14"
                         android:orientation="horizontal" />
                 </LinearLayout>
             </RelativeLayout>
 
             <ImageView
-                android:visibility="gone"
                 android:id="@+id/iv_image_banner"
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
-                android:scaleType="fitXY"
                 android:layout_marginTop="@dimen/dp_10"
-                 />
+                android:scaleType="fitXY"
+                android:visibility="gone" />
         </LinearLayout>
     </ScrollView>
 

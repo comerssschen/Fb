@@ -31,7 +31,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.weipan.fb.R;
 import cn.weipan.fb.act.BaseActivity;
-import cn.weipan.fb.constact.Constant;
+import cn.weipan.fb.common.Constant;
 import cn.weipan.fb.utils.HttpUtils;
 import cn.weipan.fb.utils.LoadingDialog;
 import cn.weipan.fb.utils.NetworkRequest;

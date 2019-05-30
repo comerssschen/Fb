@@ -11,7 +11,8 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.yanzhenjie.permission.AndPermission;
+import com.blankj.utilcode.constant.PermissionConstants;
+import com.blankj.utilcode.util.PermissionUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -79,28 +80,36 @@ public class SettingActivity extends BaseActivity implements OnClickListener {
             //联系客服
 
             case R.id.rl_contact_customer:
-                AndPermission.with(SettingActivity.this)
-                        .permission(Manifest.permission.CALL_PHONE)
-                        .send();
-                DialogUtils.customDialog(this, "", "呼叫", "取消",
-                        "客服电话：400-8321-606", new DialogUtils.DialogCallback() {
-                            @Override
-                            public void PositiveButton(int i) {
-                                switch (i) {
-                                    case -1:
-                                        Intent in4 = new Intent(
-                                                "android.intent.action.CALL", Uri
-                                                .parse("tel:" + "400-8321-606"));
-                                        startActivity(in4);
-                                        break;
-                                    case -2:
-                                        break;
+                PermissionUtils.permission(PermissionConstants.PHONE).callback(new PermissionUtils.SimpleCallback() {
+                    @Override
+                    public void onGranted() {
+                        DialogUtils.customDialog(SettingActivity.this, "", "呼叫", "取消",
+                                "客服电话：400-8321-606", new DialogUtils.DialogCallback() {
+                                    @Override
+                                    public void PositiveButton(int i) {
+                                        switch (i) {
+                                            case -1:
+                                                Intent in4 = new Intent(
+                                                        "android.intent.action.CALL", Uri
+                                                        .parse("tel:" + "400-8321-606"));
+                                                startActivity(in4);
+                                                break;
+                                            case -2:
+                                                break;
 
-                                    default:
-                                        break;
-                                }
-                            }
-                        }, false, true);
+                                            default:
+                                                break;
+                                        }
+                                    }
+                                }, false, true);
+                    }
+
+                    @Override
+                    public void onDenied() {
+
+                    }
+                }).request();
+
                 break;
 
             default:

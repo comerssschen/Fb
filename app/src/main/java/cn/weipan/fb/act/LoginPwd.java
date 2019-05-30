@@ -32,7 +32,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.weipan.fb.R;
-import cn.weipan.fb.constact.Constant;
+import cn.weipan.fb.common.Constant;
 import cn.weipan.fb.utils.HttpUtils;
 import cn.weipan.fb.utils.LoadingDialog;
 import cn.weipan.fb.utils.SharedPre;
@@ -85,6 +85,7 @@ public class LoginPwd extends BaseActivity implements View.OnClickListener {
         loginName = sp.getString("LoginName", "");
 
     }
+
     /**
      * 提交数据
      */

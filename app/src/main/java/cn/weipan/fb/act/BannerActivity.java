@@ -8,12 +8,13 @@ import android.net.http.SslError;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
-import android.webkit.SslErrorHandler;
-import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.tencent.smtt.export.external.interfaces.SslErrorHandler;
+import com.tencent.smtt.sdk.WebSettings;
+import com.tencent.smtt.sdk.WebView;
+import com.tencent.smtt.sdk.WebViewClient;
 
 import cn.weipan.fb.R;
 import cn.weipan.fb.common.CallClient;
@@ -36,13 +37,13 @@ public class BannerActivity extends BaseActivity implements View.OnClickListener
     }
 
     private void initView() {
-        LinearLayout headerBack = (LinearLayout) findViewById(R.id.ll_fanhui);
+        LinearLayout headerBack = findViewById(R.id.ll_fanhui);
         headerBack.setOnClickListener(this);
-        TextView header = (TextView) findViewById(R.id.head_view_title);
+        TextView header = findViewById(R.id.head_view_title);
         header.setText("活动详情");
         String url = getIntent().getStringExtra("url");
 
-        mWebView = (WebView) findViewById(R.id.webview);
+        mWebView = findViewById(R.id.webview);
         WebSettings webSettings = mWebView.getSettings();
         webSettings.setAllowFileAccess(true);
         webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH); //加速加载
@@ -98,8 +99,9 @@ public class BannerActivity extends BaseActivity implements View.OnClickListener
             }
 
             @Override
-            public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-                handler.proceed(); // 接受所有证书
+            public void onReceivedSslError(WebView webView, SslErrorHandler sslErrorHandler, com.tencent.smtt.export.external.interfaces.SslError sslError) {
+                super.onReceivedSslError(webView, sslErrorHandler, sslError);
+                sslErrorHandler.proceed(); // 接受所有证书
             }
 
             @Override

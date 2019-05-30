@@ -13,10 +13,11 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.constant.PermissionConstants;
+import com.blankj.utilcode.util.PermissionUtils;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
-import com.yanzhenjie.permission.AndPermission;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,7 +33,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.weipan.fb.R;
-import cn.weipan.fb.constact.Constant;
+import cn.weipan.fb.common.Constant;
 import cn.weipan.fb.utils.DBCopyUtil;
 import cn.weipan.fb.utils.DialogUtils;
 import cn.weipan.fb.utils.HttpUtils;
@@ -153,28 +154,35 @@ public class LoginRegisterActivity extends BaseNoLoginActivity implements OnClic
                     String error = object.optString("Error");
                     String sucess = object.optString("Result");
                     if (TextUtils.equals(sucess, "0")) {
+                        PermissionUtils.permission(PermissionConstants.PHONE).callback(new PermissionUtils.SimpleCallback() {
+                            @Override
+                            public void onGranted() {
+                                DialogUtils.customDialog(LoginRegisterActivity.this, "", "现在联系", "稍后",
+                                        "提交成功，请联系客服开通支付\r\n			客服电话：400-8321-606", new DialogUtils.DialogCallback() {
+                                            public void PositiveButton(int i) {
+                                                switch (i) {
+                                                    case -1:
+                                                        Intent in4 = new Intent(
+                                                                "android.intent.action.CALL", Uri
+                                                                .parse("tel:" + "400-8321-606"));
+                                                        startActivity(in4);
+                                                        break;
+                                                    case -2:
+                                                        break;
 
-                        AndPermission.with(LoginRegisterActivity.this)
-                                .permission(Manifest.permission.CALL_PHONE)
-                                .send();
-                        DialogUtils.customDialog(LoginRegisterActivity.this, "", "现在联系", "稍后",
-                                "提交成功，请联系客服开通支付\r\n			客服电话：400-8321-606", new DialogUtils.DialogCallback() {
-                                    public void PositiveButton(int i) {
-                                        switch (i) {
-                                            case -1:
-                                                Intent in4 = new Intent(
-                                                        "android.intent.action.CALL", Uri
-                                                        .parse("tel:" + "400-8321-606"));
-                                                startActivity(in4);
-                                                break;
-                                            case -2:
-                                                break;
+                                                    default:
+                                                        break;
+                                                }
+                                            }
+                                        }, false, true);
+                            }
 
-                                            default:
-                                                break;
-                                        }
-                                    }
-                                }, false, true);
+                            @Override
+                            public void onDenied() {
+
+                            }
+                        }).request();
+
                     } else {
                         ToastUtils.showToast(LoginRegisterActivity.this, error);
                     }
