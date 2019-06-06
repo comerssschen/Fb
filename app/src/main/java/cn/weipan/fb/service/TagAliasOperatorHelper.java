@@ -4,18 +4,34 @@ package cn.weipan.fb.service;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.SparseArray;
+import android.widget.Toast;
 
+import com.blankj.utilcode.util.ActivityUtils;
 import com.blankj.utilcode.util.NetworkUtils;
 import com.blankj.utilcode.util.ObjectUtils;
 import com.blankj.utilcode.util.ToastUtils;
+import com.google.gson.Gson;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.Locale;
 import java.util.Set;
 
 import cn.jpush.android.api.JPushInterface;
 import cn.jpush.android.api.JPushMessage;
+import cn.weipan.fb.act.FeedBackActivity;
+import cn.weipan.fb.bean.ArgAddJPushRegisterLog;
+import cn.weipan.fb.bean.ArgBase;
+import cn.weipan.fb.common.Constant;
+import cn.weipan.fb.utils.HttpUtils;
 
 /**
  * @author comersss
@@ -307,6 +323,7 @@ public class TagAliasOperatorHelper {
         if (tagAliasBean == null) {
             return;
         }
+        postLog(tagAliasBean.alias, jPushMessage.getErrorCode() + "", ObjectUtils.equals(jPushMessage.getAlias(), "abcd1234") ? 0 : 1);
         if (jPushMessage.getErrorCode() == 0) {
             Log.i(TAG, "action - modify alias Success,sequence:" + sequence);
             setActionCache.remove(sequence);
@@ -361,5 +378,36 @@ public class TagAliasOperatorHelper {
         }
     }
 
+    private void postLog(String alisa, String errorCode, int type) {
+        if (ObjectUtils.equals(alisa, "abcd1234")) {
+            return;
+        }
+        ArgAddJPushRegisterLog logModel = new ArgAddJPushRegisterLog(errorCode);
+        logModel.setOperateType(type);
+        logModel.setAppNameCode(1);
+        logModel.setState(ObjectUtils.equals("0", errorCode) ? 1 : 0);
+        logModel.setCashId(alisa);
 
+        ArgBase arg = new ArgBase();
+        arg.setBiz_content(new Gson().toJson(logModel));
+        arg.setMethod("api.dailypay.user.addjpushregisterlog");
+        MediaType mediaType = MediaType.parse("application/json; charset=utf-8");
+        String content = new Gson().toJson(arg);
+        Log.i("test","content= " + content);
+        RequestBody body = RequestBody.create(mediaType, content);
+        Request request = new Request.Builder().url("http://openapi.payweipan.com/api/gateway").post(body).build();
+        HttpUtils.postAsyn(ActivityUtils.getTopActivity(), request, new HttpUtils.CallBack() {
+                    @Override
+                    public void onFailure(Request request, IOException e) {
+                        Log.e("test", "失败" + request);
+                    }
+
+                    @Override
+                    public void onResponse(String json) {//{"Result":0,"Error":"成功"}
+                        Log.i("test", "feedback = " + json);
+
+                    }
+                }
+        );
+    }
 }

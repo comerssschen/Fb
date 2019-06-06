@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RoundRectShape;
+import android.support.v7.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -19,9 +20,8 @@ import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.TabWidget;
-import android.widget.TextView;
 
-public class BadgeView extends TextView {
+public class BadgeView extends AppCompatTextView {
     public static final int POSITION_TOP_LEFT = 1;//左上角
     public static final int POSITION_TOP_RIGHT = 2;//右上角
     public static final int POSITION_BOTTOM_LEFT = 3;//左下角

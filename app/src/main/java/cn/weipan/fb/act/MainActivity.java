@@ -28,6 +28,7 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.google.gson.Gson;
 import com.iflytek.cloud.SpeechConstant;
 import com.iflytek.cloud.SpeechError;
@@ -365,6 +366,7 @@ public class MainActivity extends BaseBaseActivity implements RadioGroup.OnCheck
                 break;
             //退出登录
             case R.id.rl_login_out:
+                SPUtils.getInstance().put("pwd", "");
                 TagAliasOperatorHelper.TagAliasBean tagAliasBean = new TagAliasOperatorHelper.TagAliasBean();
                 tagAliasBean.action = ACTION_SET;
                 sequence++;

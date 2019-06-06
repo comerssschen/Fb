@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.blankj.utilcode.util.SPUtils;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.RequestBody;
@@ -35,7 +36,6 @@ import cn.weipan.fb.R;
 import cn.weipan.fb.common.Constant;
 import cn.weipan.fb.utils.HttpUtils;
 import cn.weipan.fb.utils.LoadingDialog;
-import cn.weipan.fb.utils.SharedPre;
 import cn.weipan.fb.utils.ToastUtils;
 
 /**
@@ -123,8 +123,7 @@ public class LoginPwd extends BaseActivity implements View.OnClickListener {
                     JSONObject object = new JSONObject(json);
                     String result = object.optString("Result");
                     if (TextUtils.equals(result, "0")) {
-                        SharedPre shared = new SharedPre(LoginPwd.this);
-                        shared.RememberingPassword(pwdNew.getText().toString());
+                        SPUtils.getInstance().put("pwd", pwdNew.getText().toString().trim());
                         finish();
                     }
                     error = object.optString("Error");

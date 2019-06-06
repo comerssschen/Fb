@@ -1,10 +1,15 @@
 package cn.weipan.fb.common;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +21,7 @@ import com.blankj.utilcode.constant.PermissionConstants;
 import com.blankj.utilcode.util.ObjectUtils;
 import com.blankj.utilcode.util.PermissionUtils;
 import com.blankj.utilcode.util.PhoneUtils;
+import com.blankj.utilcode.util.SPUtils;
 
 import cn.weipan.fb.R;
 import cn.weipan.fb.act.BaseNoLoginActivity;
@@ -24,7 +30,6 @@ import cn.weipan.fb.act.LoginNewActivity;
 import cn.weipan.fb.act.MainActivity;
 import cn.weipan.fb.service.TagAliasOperatorHelper;
 import cn.weipan.fb.utils.NetworkRequest;
-import cn.weipan.fb.utils.SharedPre;
 import cn.weipan.fb.utils.ToastUtils;
 
 import static cn.weipan.fb.service.TagAliasOperatorHelper.ACTION_SET;
@@ -40,17 +45,17 @@ public class Appstart extends BaseNoLoginActivity implements NetworkRequest.Repo
     private String imei;
     private String alias;
     private boolean loginSucess;
-    private SharedPre shared;
+    private SPUtils spUtils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         appContext = (AppContext) getApplication();
+        spUtils = SPUtils.getInstance();
         // 不显示系统的标题栏，保证windowBackground和界面activity_main的大小一样，显示在屏幕不会有错位（去掉这一行试试就知道效果了）
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         view = View.inflate(this, R.layout.app_start, null);
         setContentView(view);
-        shared = new SharedPre(this);
         ScaleAnimation scaleAnimation = new ScaleAnimation(1.0f, 1.2f, 1.0f, 1.2f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         scaleAnimation.setDuration(1500);
         scaleAnimation.setFillAfter(true);
@@ -76,12 +81,6 @@ public class Appstart extends BaseNoLoginActivity implements NetworkRequest.Repo
                                     intent = new Intent(Appstart.this, GuideActivity.class);
                                 } else {
                                     if (loginSucess) {
-                                        TagAliasOperatorHelper.TagAliasBean tagAliasBean = new TagAliasOperatorHelper.TagAliasBean();
-                                        tagAliasBean.action = ACTION_SET;
-                                        sequence++;
-                                        tagAliasBean.alias = alias;
-                                        tagAliasBean.isAliasAction = true;
-                                        TagAliasOperatorHelper.getInstance().handleAction(getApplicationContext(), sequence, tagAliasBean);
                                         intent = new Intent(Appstart.this, MainActivity.class);
                                     } else {
                                         intent = new Intent(Appstart.this, LoginNewActivity.class);
@@ -109,15 +108,15 @@ public class Appstart extends BaseNoLoginActivity implements NetworkRequest.Repo
         view.startAnimation(scaleAnimation);
     }
 
-
     //登录
     private void login() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         imei = PhoneUtils.getIMEI();
-        String username = shared.getUsername();
-        String password = shared.getPassword();
+
+        String username = spUtils.getString("loginname");
+        String password = spUtils.getString("pwd");
         if (ObjectUtils.isEmpty(username) || ObjectUtils.isEmpty(password)) {
             return;
         }
@@ -131,8 +130,23 @@ public class Appstart extends BaseNoLoginActivity implements NetworkRequest.Repo
         mLoginRequest.setListener(Appstart.this);
     }
 
+    Handler mHandler = new Handler() {
+        public void handleMessage(Message msg) {
+            String result = (String) msg.obj;
+            setStatus(result);
+            super.handleMessage(msg);
+        }
+    };
+
     @Override
     public void onResult(String result) {
+        Message message = new Message();
+        message.obj = result;
+        mHandler.sendMessage(message);
+    }
+
+    //请求结果回调
+    private void setStatus(String result) {
         Log.i("test", "result = " + result);
         String[] arr = null;
         if (result != null) {
@@ -148,6 +162,12 @@ public class Appstart extends BaseNoLoginActivity implements NetworkRequest.Repo
                 appContext.setWorkKey(arr[6]);
                 appContext.setCashType(arr[9]);
                 Constant.isTuiKuan = Boolean.valueOf(arr[10]);
+                TagAliasOperatorHelper.TagAliasBean tagAliasBean = new TagAliasOperatorHelper.TagAliasBean();
+                tagAliasBean.action = ACTION_SET;
+                sequence++;
+                tagAliasBean.alias = alias;
+                tagAliasBean.isAliasAction = true;
+                TagAliasOperatorHelper.getInstance().handleAction(getApplicationContext(), sequence, tagAliasBean);
             } else {
                 loginSucess = false;
             }

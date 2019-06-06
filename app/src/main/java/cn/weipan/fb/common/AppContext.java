@@ -3,14 +3,15 @@ package cn.weipan.fb.common;
 import android.app.Application;
 import android.util.Log;
 
+import com.tencent.bugly.crashreport.CrashReport;
 import com.tencent.smtt.sdk.QbSdk;
 import com.uuzuche.lib_zxing.activity.ZXingLibrary;
 
 import cn.jpush.android.api.JPushInterface;
 
 /*
-* Application 应用程序
-* */
+ * Application 应用程序
+ * */
 public class AppContext extends Application {
 
     @Override
@@ -19,11 +20,9 @@ public class AppContext extends Application {
         ZXingLibrary.initDisplayOpinion(this);
         JPushInterface.setDebugMode(true);// 设置开启日志,发布时请关闭日志
         JPushInterface.init(this);// 初始化 JPush
-
+        CrashReport.initCrashReport(getApplicationContext(), "e6bfb33b3f", false);//上线时改成false
         //搜集本地tbs内核信息并上报服务器，服务器返回结果决定使用哪个内核。
-
         QbSdk.PreInitCallback cb = new QbSdk.PreInitCallback() {
-
             @Override
             public void onViewInitFinished(boolean arg0) {
                 // TODO Auto-generated method stub
@@ -37,7 +36,7 @@ public class AppContext extends Application {
             }
         };
         //x5内核初始化接口
-        QbSdk.initX5Environment(getApplicationContext(),  cb);
+        QbSdk.initX5Environment(getApplicationContext(), cb);
 
     }
 

@@ -25,6 +25,7 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.constant.PermissionConstants;
 import com.blankj.utilcode.util.PermissionUtils;
+import com.blankj.utilcode.util.SPUtils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,7 +38,6 @@ import cn.weipan.fb.service.TagAliasOperatorHelper;
 import cn.weipan.fb.utils.DialogUtils;
 import cn.weipan.fb.utils.LoadingDialog;
 import cn.weipan.fb.utils.NetworkRequest;
-import cn.weipan.fb.utils.SharedPre;
 import cn.weipan.fb.utils.ToastUtils;
 
 import static cn.weipan.fb.service.TagAliasOperatorHelper.ACTION_SET;
@@ -63,10 +63,7 @@ public class LoginNewActivity extends BaseNoLoginActivity implements NetworkRequ
     @BindView(R.id.login_regist)
     TextView loginRegist;
     String imei;
-    private SharedPre shared = null;
     private boolean flag;
-    private SharedPreferences sp;
-    private SharedPreferences.Editor editor;
     private String alias;
     private LoadingDialog loadingDialog;
 
@@ -77,7 +74,6 @@ public class LoginNewActivity extends BaseNoLoginActivity implements NetworkRequ
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         loadingDialog = new LoadingDialog(LoginNewActivity.this, "登录中...");
-
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -92,8 +88,6 @@ public class LoginNewActivity extends BaseNoLoginActivity implements NetworkRequ
 
     //初始化界面
     private void initView() {
-        sp = getSharedPreferences("userInfo", 0);
-        editor = sp.edit();
         loginnewEditMessageverify.setTransformationMethod(PasswordTransformationMethod.getInstance());
         try {
             TelephonyManager tm = (TelephonyManager) this.getSystemService(TELEPHONY_SERVICE);
@@ -105,10 +99,13 @@ public class LoginNewActivity extends BaseNoLoginActivity implements NetworkRequ
         } catch (Exception e) {
             e.printStackTrace();
         }
-        shared = new SharedPre(this);
-        loginnewEditPhone.setText(shared.getUsername());
-        loginnewEditMessageverify.setText(shared.getPassword());
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loginnewEditPhone.setText(SPUtils.getInstance().getString("loginname"));
+        loginnewEditMessageverify.setText(SPUtils.getInstance().getString("pwd"));
     }
 
     //登录
@@ -188,9 +185,8 @@ public class LoginNewActivity extends BaseNoLoginActivity implements NetworkRequ
                 appContext.setWorkKey(arr[6]);
                 appContext.setCashType(arr[9]);
                 Constant.isTuiKuan = Boolean.valueOf(arr[10]);
-
-                shared.RememberingUsername(loginnewEditPhone.getText().toString());
-                shared.RememberingPassword(loginnewEditMessageverify.getText().toString());
+                SPUtils.getInstance().put("loginname", loginnewEditPhone.getText().toString().trim());
+                SPUtils.getInstance().put("pwd", loginnewEditMessageverify.getText().toString().trim());
             } else {
                 flag = false;
                 AlertDialog.Builder builder = new AlertDialog.Builder(LoginNewActivity.this);
